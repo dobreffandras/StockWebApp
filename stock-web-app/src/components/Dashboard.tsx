@@ -8,16 +8,14 @@ function CompanyListItem({data} : {data: Company}){
 function Companies(){
     const [companies, setCompanies] = useState<Company[]>([]);
 
-    useEffect(()=>{
-        setCompanies([{
-            name: "Apple Inc.",
-            symbol: "AAPL",
-            exchange: "NASDAQ"
-        },{
-            name: "Google",
-            symbol: "GOOG",
-            exchange: "NASDAQ"
-        }])
+    useEffect(()=> {
+        fetch("https://localhost:3001/companies")
+        .then(res => res.json())
+        .then(comps => setCompanies(comps))
+        .catch(err =>{
+            console.log(err);
+            setCompanies([]);
+        });
     }, []);
 
     return (
