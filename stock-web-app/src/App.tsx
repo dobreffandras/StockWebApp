@@ -6,10 +6,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className='App-menuItem'>
-          Home
+          <a href="#">Home</a> 
         </div>
         <div className='App-menuItem'>
-          Stocks
+          <a href="#">Stocks</a>
         </div>
       </header>
     </div>

@@ -12,3 +12,8 @@
 .App-menuItem {
   margin: 5px;
 }
+
+.App-menuItem a {   
+  color: white;
+  text-decoration: none;
+}
