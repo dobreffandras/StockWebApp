@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: 
+      context: ./StockWebApp
+    ports:
+      - "3001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+  frontend:
+    build:
+      context: ./stock-web-app
+    ports:
+      - "3000:80"
+      
