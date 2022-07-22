@@ -1,4 +1,5 @@
 import './App.css';
+import Dashboard from './components/Dashboard';
 import Menu from './components/Menu';
 import { MenuItem } from './types/types';
 
@@ -20,6 +21,7 @@ function App() {
       <header className="App-header">
         <Menu items={menuItems}/>
       </header>
+      <Dashboard />
     </div>
   );
 }
