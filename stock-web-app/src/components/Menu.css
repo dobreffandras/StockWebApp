@@ -1,0 +1,15 @@
+.Menu {
+    background-color: #282c34;
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+
+.Menu-item {
+    margin: 5px;
+}
+
+.Menu-item a {   
+    color: white;
+    text-decoration: none;
+}
