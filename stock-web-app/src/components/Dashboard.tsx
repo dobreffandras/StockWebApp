@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
-import { Company } from "../types/types";
+import { BasicStock, Company } from "../types/types";
 
-function CompanyListItem({data} : {data: Company}){
-    return (<div>{data.name}({data.symbol}) @{data.exchange} </div>);
+function CompanyListItem({data} : {data: BasicStock}){
+    const company = data.company;
+    const price = (<div>{data.stockPrice} ${data.currency}</div>);
+    const sign = data.changePoint >= 0 ? "+" : "-"; 
+    return (<div>
+                {company.name}({company.symbol}) @{company.exchange} 
+                {price}
+                <div>{sign} {data.changePoint} ({data.changePercentage}%)</div>
+            </div>);
 }
 
-function Companies(){
+function BasicStocks(){
     
-    const [companies, setCompanies] = useState<Company[]>([]);
+    const [stocks, setStocks] = useState<BasicStock[]>([]);
 
     useEffect(()=> {
         const backendservice = new Backendservice();
         backendservice
             .fetchCompanies()
-            .then(comps => setCompanies(comps))
+            .then(comps => setStocks(comps))
             .catch(err =>{
                 console.log(err);
-                setCompanies([]);
+                setStocks([]);
             });
     }, []);
 
@@ -25,7 +32,7 @@ function Companies(){
     <>
         <h2>Companies</h2>
         <div>
-            {companies.map(i => (<li><CompanyListItem data={i} /></li>))}
+            {stocks.map(i => (<li><CompanyListItem data={i} /></li>))}
         </div>
     </>)
 }
@@ -34,7 +41,7 @@ function Dashboard(){
     return (
     <div>
         <h1>Dashboard</h1>
-        <Companies />
+        <BasicStocks />
     </div>)
 }
 

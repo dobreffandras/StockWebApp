@@ -8,3 +8,11 @@ export interface Company {
     symbol: string;
     exchange: string;
 }
+
+export interface BasicStock {
+    company: Company,
+    stockPrice: number,
+    currency: string,
+    changePoint: number,
+    changePercentage: number,
+} 
