@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Backendservice from "../services/backendservice";
 import { Company } from "../types/types";
 
 function CompanyListItem({data} : {data: Company}){
@@ -6,16 +7,18 @@ function CompanyListItem({data} : {data: Company}){
 }
 
 function Companies(){
+    
     const [companies, setCompanies] = useState<Company[]>([]);
 
     useEffect(()=> {
-        fetch("https://localhost:3001/companies")
-        .then(res => res.json())
-        .then(comps => setCompanies(comps))
-        .catch(err =>{
-            console.log(err);
-            setCompanies([]);
-        });
+        const backendservice = new Backendservice();
+        backendservice
+            .fetchCompanies()
+            .then(comps => setCompanies(comps))
+            .catch(err =>{
+                console.log(err);
+                setCompanies([]);
+            });
     }, []);
 
     return (
