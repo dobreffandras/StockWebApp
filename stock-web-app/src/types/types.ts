@@ -14,5 +14,5 @@ export interface BasicStock {
     stockPrice: number,
     currency: string,
     changePoint: number,
-    changePercentage: number,
+    changePercent: number,
 } 

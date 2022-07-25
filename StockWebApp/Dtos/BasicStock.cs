@@ -5,5 +5,5 @@
         double StockPrice,
         string Currency,
         double ChangePoint,
-        double Changepercent);
+        double ChangePercent);
 }
