@@ -28,7 +28,7 @@ namespace StockWebApp.Controllers
                     new Company("NFLX", "NASDAQ", "Netflix"),
                     220.44,
                     "USD",
-                    -3.44,
+                    3.44,
                     1.54)
             };
         }
