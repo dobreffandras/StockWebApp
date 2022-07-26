@@ -4,30 +4,29 @@
     margin-left: auto;
     margin-right: 15px;
     text-align: center;
-}
 
-.changepoint-details.natural{
-    color: black;
-}
+    &.natural{
+        color: black;
+    }
 
-.changepoint-details.positive{
-    color: rgb(27, 102, 37);
-}
+    &.positive{
+        color: rgb(27, 102, 37);
+    }
+    
+    &.negative{
+        color: rgb(132, 28, 28);
+    }
 
-.changepoint-details.negative{
-    color: rgb(132, 28, 28);
-}
+    .indicator{
+        margin: auto 7px;
+        font-size: 16pt;
+    }
 
+    .changepoints .changepoint {
+        font-size: 16pt;
+    }
 
-.changepoint-details .indicator{
-    margin: auto 7px;
-    font-size: 16pt;
-}
-
-.changepoint-details .changepoints .changepoint {
-    font-size: 16pt;
-}
-
-.changepoint-details .changepoints .changepercent {
-    font-size: 12pt;
+    .changepoints .changepercent {
+        font-size: 12pt;
+    }
 }

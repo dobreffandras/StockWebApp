@@ -1,69 +1,74 @@
-.stockPage header {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid lightblue;
-}
+.stockPage {
+    header {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid lightblue;
 
-.stockPage header .company-name{
-    margin-bottom: 5px;
-}
+        .company-name {
+            margin-bottom: 5px;
+        }
 
-header .sub-header{
-    margin-bottom: 5px;
-    color: gray;
-}
-
-.content {
-    display: flex;
-}
-
-.left-sidebar {
-    padding: 10px;
-    border: 1px solid lightblue;
-}
-
-.left-sidebar .sidebar-header .price{
-    font-size: 24pt;
-}
+        .sub-header {
+            margin-bottom: 5px;
+            color: gray;
+        }
+    }
 
 
-.left-sidebar .sidebar-header .price{
-    font-size: 24pt;
-}
+    .content {
+        display: flex;
 
-.left-sidebar .sidebar-header .changepont-container{
-    margin: auto;
-    width: fit-content;
-}
+        .left-sidebar {
+            padding: 10px;
+            border: 1px solid lightblue;
 
-.left-sidebar .additional-data table{
-    margin: 20px;
-    width: max-content;
-    border: 1px solid lightblue;
-    border-spacing: 0;
-}
+            .sidebar-header {
+
+                .price {
+                    font-size: 24pt;
+                }
+
+                .changepont-container {
+                    margin: auto;
+                    width: fit-content;
+                }
+            }
+
+            .additional-data table {
+                margin: 20px;
+                width: max-content;
+                border: 1px solid lightblue;
+                border-spacing: 0;
+
+                tr {
+                    &:nth-child(odd) {
+                        background-color: lightgray;
+                    }
+
+                    td {
+                        padding: 5px;
+                    }
+
+                    .property-name {
+                        text-align: right;
+                    }
+                }
+            }
+
+        }
+
+        .chart-container {
+            width: 100%;
+            border: 1px solid lightblue;
 
 
-.left-sidebar .additional-data .property-name{
-    text-align: right;
-}
+            .chart {
+                margin: auto;
+                width: 80%;
+                height: 550px;
+                background-color: lightgray;
+            }
+        }
 
-.left-sidebar .additional-data tr td{
-    padding: 5px;
-}
-
-.left-sidebar .additional-data tr:nth-child(odd){
-    background-color: lightgray;
-}
-
-.chart-container {
-    width: 100%;
-    border: 1px solid lightblue;
-}
-
-.chart {
-    margin: auto;
-    width: 80%;
-    height: 550px;
-    background-color: lightgray;
+    }
 }
