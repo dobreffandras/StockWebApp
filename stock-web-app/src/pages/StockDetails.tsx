@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
 import { Stock } from "../types/types";
-import ChangePointDetails from './ChangePointDetails';
+import ChangePointDetails from '../components/ChangePointDetails';
 
 function StockDetails(){
     const { symbol } = useParams();

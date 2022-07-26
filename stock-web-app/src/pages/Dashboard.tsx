@@ -2,7 +2,7 @@ import './Dashboard.scss';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
 import { BasicStock } from "../types/types";
-import ChangePointDetails from './ChangePointDetails';
+import ChangePointDetails from '../components/ChangePointDetails';
 
 function BasicStockListItem({data} : {data: BasicStock}){
     const company = data.company;

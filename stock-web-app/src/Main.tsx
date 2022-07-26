@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Dashboard from './components/Dashboard';
-import StockDetails from './components/StockDetails';
+import Dashboard from './pages/Dashboard';
+import StockDetails from './pages/StockDetails';
 
 const Main = () => {
   return (
