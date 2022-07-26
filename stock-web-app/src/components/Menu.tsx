@@ -1,4 +1,4 @@
-import './Menu.css';
+import './Menu.scss';
 import { MenuItem } from "../types/types";
 
 function Menu({items} : {items: MenuItem[]}){

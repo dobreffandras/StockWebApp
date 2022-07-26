@@ -1,4 +1,4 @@
-import './ChangePointDetails.css';
+import './ChangePointDetails.scss';
 
 function ChangePointDetails({ changePoint, changePercent }: { changePoint: number; changePercent: number; }) {
     const indicated_style = signSwitch(changePoint, "positive", "negative", "natural");

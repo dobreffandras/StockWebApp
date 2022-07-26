@@ -1,5 +1,4 @@
-import './App.css';
-import Dashboard from './components/Dashboard';
+import './App.scss';
 import Menu from './components/Menu';
 import Main from './Main';
 import { MenuItem } from './types/types';

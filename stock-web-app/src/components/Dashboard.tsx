@@ -1,4 +1,4 @@
-import './Dashboard.css';
+import './Dashboard.scss';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
 import { BasicStock } from "../types/types";
