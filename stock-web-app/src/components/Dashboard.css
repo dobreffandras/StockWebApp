@@ -4,6 +4,11 @@
     justify-content: space-evenly;
 }
 
+.stock-boxes-container a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
 .stock-boxes-container .basic-stock-box {
     margin: 10px;
     padding: 20px;

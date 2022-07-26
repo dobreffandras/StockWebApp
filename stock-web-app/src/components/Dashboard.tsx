@@ -21,7 +21,9 @@ function ChangePointDetails({changePoint, changePercent} : {changePoint : number
 
 function BasicStockListItem({data} : {data: BasicStock}){
     const company = data.company;
-    return (<div className="basic-stock-box">
+    return (
+        <a href={company.symbol}>
+            <div className="basic-stock-box">
                 <header>{company.name}</header>
                 <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
                 <div className='stock-details'>
@@ -33,7 +35,8 @@ function BasicStockListItem({data} : {data: BasicStock}){
                         changePercent={data.changePercent}
                         />
                 </div>
-            </div>);
+            </div>
+        </a>);
 }
 
 function BasicStocks(){
