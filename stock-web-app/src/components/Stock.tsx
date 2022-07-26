@@ -17,8 +17,8 @@ function Stock(){
 
     useEffect(() => {
         backendservice
-            .fetchStocks()
-            .then(stocks => setStock(stocks[0])) //TODO change this dummy call to a specific stock
+            .fetchStock(symbol!)
+            .then(s => setStock(s))
             .catch(err => {
                 console.log(err);
                 setStock(initialStock);
