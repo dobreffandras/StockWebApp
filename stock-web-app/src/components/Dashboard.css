@@ -12,6 +12,10 @@
     border: 1px rgb(31, 126, 145) solid;
     border-radius: 10px;
     box-shadow: 0px 0px 3px rgb(148, 190, 199);
+    transition: 0.3s;
+}
+.stock-boxes-container .basic-stock-box:hover {
+    background-color: rgb(148, 190, 199);
 }
 
 .basic-stock-box header{
