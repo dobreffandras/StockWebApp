@@ -2,40 +2,42 @@ import './StockDetails.scss';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
-import { Stock } from "../types/types";
+import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
 
 function StockDetails(){
     const { symbol } = useParams();
     const backendservice = new Backendservice();
-    const initialStock : Stock = {
-        company: {symbol : symbol!, name: "?", exchange: "?"},
-        currency: "?",
-        price: 0,
-        changePoint: 0,
-        changePercent: 0,
-        previousClose: 0,
-        open: 0,
-        dailyRange: { low: 0, high: 0},
-        yearlyRange: { low: 0, high: 0},
-        dividend: 0,
-        dividendYield: 0,
-        marketCap: 0
-    }
-    const [stock, setStock] = useState<Stock>(initialStock); // TODO change to loading
-    const company = stock.company;
+    
+    const [stock, setStock] = useState<Loadable<Stock>>({type: "notloaded"} as NotLoaded);
 
     useEffect(() => {
+        setStock({type: "loadinginprogress"} as LoadingInProgress);
+
         backendservice
             .fetchStock(symbol!)
-            .then(s => setStock(s))
+            .then(s => setStock({type: "loaded", data: s} as Loaded<Stock>))
             .catch(err => {
                 console.log(err);
-                setStock(initialStock);
+                setStock({type: "loadingfailed", error: err} as LoadingFailed);
             });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    switch(stock.type){
+        case "loaded":
+            return (<StockDetailsLoaded stock={stock.data} />);
+        case "loadingfailed":
+            return (<>Loading failed. Please refresh the page.</>);
+        case "loadinginprogress":
+            return (<>Loading...</>);
+        case "notloaded":
+            return (<>Not loaded.</>);
+    }
+}
+
+function StockDetailsLoaded({stock} : {stock: Stock}){
+    const company = stock.company;
     return (
         <div className="stockPage">
             <header>

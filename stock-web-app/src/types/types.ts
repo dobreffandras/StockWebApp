@@ -36,4 +36,11 @@ export interface Stock {
         },
     dividend: number | undefined,
     dividendYield: number | undefined
-} 
+}
+
+export type NotLoaded = { type: "notloaded"};
+export type LoadingInProgress = { type: "loadinginprogress"};
+export type Loaded<T> = {type: "loaded", data: T};
+export type LoadingFailed = {type: "loadingfailed", error: string};
+
+export type Loadable<T> = NotLoaded | LoadingInProgress | Loaded<T> | LoadingFailed;

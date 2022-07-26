@@ -54,6 +54,7 @@ namespace StockWebApp.Controllers
         [HttpGet]
         public IEnumerable<BasicStock> GetStocks()
         {
+            Thread.Sleep(500);
             return stocks.Values.Select(
                 stock => new BasicStock(
                     stock.Company,
@@ -66,7 +67,8 @@ namespace StockWebApp.Controllers
         [HttpGet("{symbol}")]
         public ActionResult<Stock> GetStock(string symbol)
         {
-            if(stocks.TryGetValue(symbol, out var stock))
+            Thread.Sleep(500);
+            if (stocks.TryGetValue(symbol, out var stock))
             {
                 return Ok(stock);
             }
