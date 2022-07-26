@@ -1,6 +1,7 @@
 import './App.css';
 import Dashboard from './components/Dashboard';
 import Menu from './components/Menu';
+import Main from './Main';
 import { MenuItem } from './types/types';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
       <header className="App-header">
         <Menu items={menuItems}/>
       </header>
-      <Dashboard />
+      <Main />
     </div>
   );
 }
