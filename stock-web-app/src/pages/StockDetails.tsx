@@ -33,6 +33,7 @@ function StockDetails(){
                 console.log(err);
                 setStock(initialStock);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -20,11 +20,11 @@ function ChangePointDetails({ changePoint, changePercent }: { changePoint: numbe
 function signSwitch<T>(n: number, pos: T, neg: T, nat: T) : T{
     var sign = Math.sign(n);
 
-        if(sign == 1){
+        if(sign === 1){
             return pos
         }
 
-        if(sign == -1){
+        if(sign === -1){
             return neg;
         }
 
