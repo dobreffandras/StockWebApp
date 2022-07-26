@@ -78,7 +78,7 @@ function StockDetails(){
                             }
                             <tr>
                                 <td className='property-name'>Market cap:</td>
-                                <td>{stock.marketCap}</td>
+                                <td>{toBillion(stock.marketCap)}</td>
                             </tr>
                         </table>
                     </div>
@@ -88,6 +88,11 @@ function StockDetails(){
                 </div>
             </div>
         </div>);
+}
+
+function toBillion(n: number){
+    var converted = n / 1_000_000_000;
+    return `${converted} B`;
 }
 
 export default StockDetails;
