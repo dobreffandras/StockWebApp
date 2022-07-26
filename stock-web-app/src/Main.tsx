@@ -1,13 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 
 import Dashboard from './components/Dashboard';
-import Stock from './components/Stock';
+import StockDetails from './components/StockDetails';
 
 const Main = () => {
   return (
     <Routes>
       <Route path='/' element={<Dashboard />}></Route>
-      <Route path='/:symbol' element={<Stock />}></Route>
+      <Route path='/:symbol' element={<StockDetails />}></Route>
     </Routes>
   );
 }

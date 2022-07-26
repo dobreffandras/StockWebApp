@@ -23,7 +23,7 @@ export interface Stock {
     currency: string,
     changePoint: number,
     changePercent: number,
-    PreviousClose: number,
+    previousClose: number,
         open: number,
         marketCap: number,
         dailyRange: {
