@@ -1,4 +1,4 @@
-import { BasicStock } from "../types/types";
+import { BasicStock, Stock } from "../types/types";
 const host = process.env.REACT_APP_BACKEND_HOST;
 
 
@@ -11,8 +11,8 @@ class Backendservice {
         return fetchJson<BasicStock[]>(`${host}/stocks`);
     }
 
-    fetchStock(symbol: string) : Promise<BasicStock> {
-        return fetchJson<BasicStock>(`${host}/stocks/${symbol}`);
+    fetchStock(symbol: string) : Promise<Stock> {
+        return fetchJson<Stock>(`${host}/stocks/${symbol}`);
     }
 }
 

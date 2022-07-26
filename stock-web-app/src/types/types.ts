@@ -15,4 +15,25 @@ export interface BasicStock {
     currency: string,
     changePoint: number,
     changePercent: number,
+}
+
+export interface Stock {
+    company: Company,
+    stockPrice: number,
+    currency: string,
+    changePoint: number,
+    changePercent: number,
+    PreviousClose: number,
+        open: number,
+        marketCap: number,
+        dailyRange: {
+            low: number,
+            high: number
+        },
+        yearlyRange: {
+            low: number,
+            high: number,
+        },
+    dividend: number | undefined,
+    dividendYield: number | undefined
 } 
