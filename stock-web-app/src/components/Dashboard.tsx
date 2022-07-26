@@ -4,27 +4,13 @@ import Backendservice from "../services/backendservice";
 import { BasicStock } from "../types/types";
 
 function ChangePointDetails({changePoint, changePercent} : {changePoint : number, changePercent: number}){
-
-    function ChangeIndicator({changepoint} : {changepoint: number}){
-        var sign = Math.sign(changepoint);
-
-        if(sign == 1){
-            return (<>&#x25B2;</>)
-        }
-
-        if(sign == -1){
-            return (<>&#x25BC;</>)
-        }
-
-        return (<>-</>)
-    }
-
-    const indicated_style = changePoint != 0 ? (changePoint > 0 ? "positive" : "negative") : "natural";
+    const indicated_style = signSwitch(changePoint, "positive", "negative", "natural");
+    const indicator = signSwitch(changePoint, "\u25B2", "\u25BC", "-");
 
     return (
     <div className={`changepoint-details ${indicated_style}`}>
         <div className='indicator'>
-            <ChangeIndicator changepoint={changePoint} />
+            {indicator}
         </div>
         <div className='changepoints'>
             <div className='changepoint'>{changePoint}</div>
@@ -80,6 +66,20 @@ function Dashboard(){
         <h1>Dashboard</h1>
         <BasicStocks />
     </div>)
+}
+
+function signSwitch<T>(n: number, pos: T, neg: T, nat: T) : T{
+    var sign = Math.sign(n);
+
+        if(sign == 1){
+            return pos
+        }
+
+        if(sign == -1){
+            return neg;
+        }
+
+        return nat;
 }
 
 export default Dashboard;
