@@ -17,7 +17,7 @@ function Stock(){
 
     useEffect(() => {
         backendservice
-            .fetchCompanies()
+            .fetchStocks()
             .then(stocks => setStock(stocks[0])) //TODO change this dummy call to a specific stock
             .catch(err => {
                 console.log(err);

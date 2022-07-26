@@ -46,7 +46,7 @@ function BasicStocks(){
     useEffect(()=> {
         const backendservice = new Backendservice();
         backendservice
-            .fetchCompanies()
+            .fetchStocks()
             .then(comps => setStocks(comps))
             .catch(err =>{
                 console.log(err);
