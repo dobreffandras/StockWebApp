@@ -1,0 +1,55 @@
+.stockPage header {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid lightblue;
+}
+
+.stockPage header .company-name{
+    margin-bottom: 5px;
+}
+
+header .sub-header{
+    margin-bottom: 5px;
+    color: gray;
+}
+
+.content {
+    display: flex;
+}
+
+.left-sidebar {
+    padding: 10px;
+    border: 1px solid lightblue;
+}
+
+.left-sidebar .additional-data table{
+    margin: 20px;
+    width: max-content;
+    border: 1px solid lightblue;
+    border-spacing: 0;
+}
+
+
+.left-sidebar .additional-data .property-name{
+    text-align: right;
+}
+
+.left-sidebar .additional-data tr td{
+    padding: 5px;
+}
+
+.left-sidebar .additional-data tr:nth-child(odd){
+    background-color: lightgray;
+}
+
+.chart-container {
+    width: 100%;
+    border: 1px solid lightblue;
+}
+
+.chart {
+    margin: auto;
+    width: 80%;
+    height: 550px;
+    background-color: lightgray;
+}

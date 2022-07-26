@@ -1,3 +1,4 @@
+import './StockDetails.css';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
@@ -21,6 +22,7 @@ function StockDetails(){
         marketCap: 0
     }
     const [stock, setStock] = useState<Stock>(initialStock); // TODO change to loading
+    const company = stock.company;
 
     useEffect(() => {
         backendservice
@@ -33,21 +35,51 @@ function StockDetails(){
     }, []);
 
     return (
-        <div>
-            <div>{stock.company.symbol}</div>
-            <div>{stock.company.name}</div>
-            <div>{stock.company.exchange}</div>
-            <div>{stock.stockPrice}</div>
-            <div>{stock.currency}</div>
-            <div>{stock.changePoint}</div>
-            <div>{stock.changePercent}</div>
-            <div>{stock.previousClose}</div>
-            <div>{stock.open}</div>
-            <div>{stock.dailyRange.low}-{stock.dailyRange.high}</div>
-            <div>{stock.yearlyRange.low}-{stock.yearlyRange.high}</div>
-            <div>{stock.dividend}</div>
-            <div>{stock.dividendYield}</div>
-            <div>{stock.marketCap}</div>
+        <div className="stockPage">
+            <header>
+                <h1 className='company-name'>{stock.company.name}</h1>
+                <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
+            </header>
+            <div className="content">
+                <div className="left-sidebar">
+                    <div className="sidebar-header">
+                        <div>{stock.stockPrice} {stock.currency}</div>
+                        <div>{stock.changePoint}</div>
+                        <div>{stock.changePercent}</div>
+                    </div>
+                    <div className="additional-data">
+                        <table>
+                            <tr>
+                                <td className='property-name'>Previous close:</td>
+                                <td>{stock.previousClose}</td>
+                            </tr>
+                            <tr>
+                                <td className='property-name'>Open:</td>
+                                <td>{stock.open}</td>
+                            </tr>
+                            <tr>
+                                <td className='property-name'>Daily range:</td>
+                                <td>{stock.dailyRange.low}-{stock.dailyRange.high}</td>
+                            </tr>
+                            <tr>
+                                <td className='property-name'>Yearly range:</td>
+                                <td>{stock.yearlyRange.low}-{stock.yearlyRange.high}</td>
+                            </tr>
+                            <tr>
+                                <td className='property-name'>Dividend (Yield):</td>
+                                <td>{stock.dividend} ({stock.dividendYield}%)</td>
+                            </tr>
+                            <tr>
+                                <td className='property-name'>Market cap:</td>
+                                <td>{stock.marketCap}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div className="chart-container">
+                    <div className="chart"></div>
+                </div>
+            </div>
         </div>);
 }
 
