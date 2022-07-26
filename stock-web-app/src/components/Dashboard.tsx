@@ -19,7 +19,7 @@ function ChangePointDetails({changePoint, changePercent} : {changePoint : number
     </div>);
 }
 
-function CompanyListItem({data} : {data: BasicStock}){
+function BasicStockListItem({data} : {data: BasicStock}){
     const company = data.company;
     return (<div className="basic-stock-box">
                 <header>{company.name}</header>
@@ -55,7 +55,7 @@ function BasicStocks(){
     <>
         <h2>Companies</h2>
         <div className='stock-boxes-container'>
-            {stocks.map(i => (<CompanyListItem data={i} />))}
+            {stocks.map(i => (<BasicStockListItem data={i} />))}
         </div>
     </>)
 }
