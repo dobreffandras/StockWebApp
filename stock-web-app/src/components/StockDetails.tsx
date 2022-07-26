@@ -10,7 +10,7 @@ function StockDetails(){
     const initialStock : Stock = {
         company: {symbol : symbol!, name: "?", exchange: "?"},
         currency: "?",
-        stockPrice: 0,
+        price: 0,
         changePoint: 0,
         changePercent: 0,
         previousClose: 0,
@@ -43,7 +43,7 @@ function StockDetails(){
             <div className="content">
                 <div className="left-sidebar">
                     <div className="sidebar-header">
-                        <div>{stock.stockPrice} {stock.currency}</div>
+                        <div>{stock.price} {stock.currency}</div>
                         <div>{stock.changePoint}</div>
                         <div>{stock.changePercent}</div>
                     </div>

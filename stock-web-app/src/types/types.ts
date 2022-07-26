@@ -19,7 +19,7 @@ export interface BasicStock {
 
 export interface Stock {
     company: Company,
-    stockPrice: number,
+    price: number,
     currency: string,
     changePoint: number,
     changePercent: number,
