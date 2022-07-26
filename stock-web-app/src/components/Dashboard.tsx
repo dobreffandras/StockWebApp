@@ -2,22 +2,7 @@ import './Dashboard.css';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
 import { BasicStock } from "../types/types";
-
-function ChangePointDetails({changePoint, changePercent} : {changePoint : number, changePercent: number}){
-    const indicated_style = signSwitch(changePoint, "positive", "negative", "natural");
-    const indicator = signSwitch(changePoint, "\u25B2", "\u25BC", "-");
-
-    return (
-    <div className={`changepoint-details ${indicated_style}`}>
-        <div className='indicator'>
-            {indicator}
-        </div>
-        <div className='changepoints'>
-            <div className='changepoint'>{changePoint}</div>
-            <div className='changepercent'>({changePercent}%)</div>
-        </div>
-    </div>);
-}
+import ChangePointDetails from './ChangePointDetails';
 
 function BasicStockListItem({data} : {data: BasicStock}){
     const company = data.company;
@@ -69,20 +54,6 @@ function Dashboard(){
         <h1>Dashboard</h1>
         <BasicStocks />
     </div>)
-}
-
-function signSwitch<T>(n: number, pos: T, neg: T, nat: T) : T{
-    var sign = Math.sign(n);
-
-        if(sign == 1){
-            return pos
-        }
-
-        if(sign == -1){
-            return neg;
-        }
-
-        return nat;
 }
 
 export default Dashboard;
