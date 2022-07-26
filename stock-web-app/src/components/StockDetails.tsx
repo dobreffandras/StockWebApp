@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
 import { Stock } from "../types/types";
+import ChangePointDetails from './ChangePointDetails';
 
 function StockDetails(){
     const { symbol } = useParams();
@@ -43,9 +44,12 @@ function StockDetails(){
             <div className="content">
                 <div className="left-sidebar">
                     <div className="sidebar-header">
-                        <div>{stock.price} {stock.currency}</div>
-                        <div>{stock.changePoint}</div>
-                        <div>{stock.changePercent}</div>
+                        <div className='price'>{stock.price} {stock.currency}</div>
+                        <div className='changepont-container'>
+                            <ChangePointDetails
+                                changePoint={stock.changePoint}
+                                changePercent={stock.changePercent} />
+                        </div>
                     </div>
                     <div className="additional-data">
                         <table>

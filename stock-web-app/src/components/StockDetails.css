@@ -22,6 +22,20 @@ header .sub-header{
     border: 1px solid lightblue;
 }
 
+.left-sidebar .sidebar-header .price{
+    font-size: 24pt;
+}
+
+
+.left-sidebar .sidebar-header .price{
+    font-size: 24pt;
+}
+
+.left-sidebar .sidebar-header .changepont-container{
+    margin: auto;
+    width: fit-content;
+}
+
 .left-sidebar .additional-data table{
     margin: 20px;
     width: max-content;
