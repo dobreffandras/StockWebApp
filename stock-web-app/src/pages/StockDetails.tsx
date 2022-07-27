@@ -42,6 +42,7 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
     return (
         <div className="stockPage">
             <header>
+                <a className='back-to-dashboard' href='/'>← Dashboard</a>
                 <h1 className='company-name'>{stock.company.name}</h1>
                 <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
             </header>

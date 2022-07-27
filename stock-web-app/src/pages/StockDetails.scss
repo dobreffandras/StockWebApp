@@ -4,6 +4,20 @@
         text-align: left;
         border: 1px solid lightblue;
 
+        .back-to-dashboard {
+            color: lightgray;
+            text-decoration: none;
+            transition: 0.1s;
+            padding: 5px;
+            vertical-align: middle;
+            border-radius: 3px;
+
+            &:hover{
+                background-color: lightgray;
+                color: gray;
+            }
+        }
+
         .company-name {
             margin-bottom: 5px;
         }
