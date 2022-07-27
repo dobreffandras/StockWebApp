@@ -7,8 +7,8 @@ function StockChart() {
     const data : ChartData<"line", {x: Date, y: number}[]>= {
         datasets: [{
           label: 'My First dataset',
-          backgroundColor: 'blue',
-          borderColor: 'blue', 
+          backgroundColor: '#067194',
+          borderColor: '#067194', 
           data: [
             {
                 x: new Date('2016-12-25'), 
