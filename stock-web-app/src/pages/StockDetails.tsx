@@ -10,17 +10,17 @@ function StockDetails(){
     const { symbol } = useParams();
     const backendservice = new Backendservice();
     
-    const [stock, setStock] = useState<Loadable<Stock>>({type: "notloaded"} as NotLoaded);
+    const [stock, setStock] = useState<Loadable<Stock>>(NotLoaded);
 
     useEffect(() => {
-        setStock({type: "loadinginprogress"} as LoadingInProgress);
+        setStock(LoadingInProgress);
 
         backendservice
             .fetchStock(symbol!)
-            .then(s => setStock({type: "loaded", data: s} as Loaded<Stock>))
+            .then(s => setStock(Loaded(s)))
             .catch(err => {
                 console.log(err);
-                setStock({type: "loadingfailed", error: err} as LoadingFailed);
+                setStock(LoadingFailed(err));
             });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

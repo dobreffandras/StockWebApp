@@ -43,4 +43,9 @@ export type LoadingInProgress = { type: "loadinginprogress"};
 export type Loaded<T> = {type: "loaded", data: T};
 export type LoadingFailed = {type: "loadingfailed", error: string};
 
+export const NotLoaded : NotLoaded = {type: "notloaded"};
+export const LoadingInProgress : LoadingInProgress = { type: "loadinginprogress"};
+export const Loaded: <T,>(d : T) => Loaded<T> = (d) => ({ type: "loaded", data: d });
+export const LoadingFailed: (e: string) => LoadingFailed = (e) => ({ type: "loadingfailed", error: e });
+
 export type Loadable<T> = NotLoaded | LoadingInProgress | Loaded<T> | LoadingFailed;
