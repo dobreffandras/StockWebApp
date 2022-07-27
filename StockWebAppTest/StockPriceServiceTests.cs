@@ -25,7 +25,8 @@ namespace StockWebAppTest
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
-                () => 0);
+                randomFeed: () => 0,
+                forces: new [] { 0.0 });
 
             // Then
             var expected =
@@ -54,7 +55,8 @@ namespace StockWebAppTest
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
-                () => constant);
+                randomFeed: () => constant,
+                forces: new[] { 0.0 });
 
             // Then
             var expected =
@@ -84,11 +86,12 @@ namespace StockWebAppTest
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
-                () =>
+                randomFeed: () =>
                 {
                     feedEnumberator.MoveNext();
                     return feedEnumberator.Current;
-                });
+                },
+                forces: new[] { 0.0 });
 
             // Then
             var expected =
@@ -103,6 +106,43 @@ namespace StockWebAppTest
 
             prices.Should().BeEquivalentTo(
                 expected, 
+                o => o.Using<double>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.001)).WhenTypeIs<double>());
+        }
+
+        [Fact]
+        public void Generates_increasing_values_For_variable_Feed_Affected_by_Force()
+        {
+            // Given
+            var startDate = DateTime.Now;
+            var startPrice = 152.34;
+            var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
+            var feedEnumberator = feeds.GetEnumerator();
+
+            // When
+            var prices = sut.GenerateDailyPrices(
+                startPrice,
+                startDate: startDate,
+                endDate: startDate.AddDays(5),
+                () =>
+                {
+                    feedEnumberator.MoveNext();
+                    return feedEnumberator.Current;
+                },
+                forces: new[] {0.05});
+
+            // Then
+            var expected =
+                new[]
+                {
+                    new StockPrice(startDate.AddDays(0), 152.34),
+                    new StockPrice(startDate.AddDays(1), 152.42),
+                    new StockPrice(startDate.AddDays(2), 152.48),
+                    new StockPrice(startDate.AddDays(3), 152.48),
+                    new StockPrice(startDate.AddDays(4), 152.54),
+                };
+
+            prices.Should().BeEquivalentTo(
+                expected,
                 o => o.Using<double>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.001)).WhenTypeIs<double>());
         }
     }
