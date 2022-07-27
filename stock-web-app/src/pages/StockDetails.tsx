@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
 import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
+import StockChart from '../components/StockChart';
 
 function StockDetails(){
     const { symbol } = useParams();
@@ -87,7 +88,9 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                     </div>
                 </div>
                 <div className="chart-container">
-                    <div className="chart"></div>
+                    <div className="chart">
+                        <StockChart />
+                    </div>
                 </div>
             </div>
         </div>);
