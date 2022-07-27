@@ -75,5 +75,18 @@ namespace StockWebApp.Controllers
 
             return NotFound();
         }
+
+        [HttpGet("{symbol}/prices")]
+        public ActionResult<IEnumerable<StockPrice>> GetPrices()
+        {
+            var random = new Random();
+            var today = DateTime.Now;
+            return Ok(Enumerable.Range(0, 365)
+                .Select(dayNum =>
+                {
+                    var date = today.AddDays(-365 + dayNum);
+                    return new StockPrice(date, random.Next());
+                }));
+        }
     }
 }
