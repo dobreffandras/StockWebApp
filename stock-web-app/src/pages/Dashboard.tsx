@@ -43,7 +43,7 @@ function BasicStocks(){
     <>
         <h2>Companies</h2>
         <div className='stock-boxes-container'>
-            {stocks.map(i => (<BasicStockListItem data={i} />))}
+            {stocks.map(i => (<BasicStockListItem data={i} key={i.company.symbol} />))}
         </div>
     </>)
 }
