@@ -49,3 +49,22 @@ export const Loaded: <T,>(d : T) => Loaded<T> = (d) => ({ type: "loaded", data: 
 export const LoadingFailed: (e: string) => LoadingFailed = (e) => ({ type: "loadingfailed", error: e });
 
 export type Loadable<T> = NotLoaded | LoadingInProgress | Loaded<T> | LoadingFailed;
+
+export function SwitchLoadable<T, TRes>(
+    loadable: Loadable<T>,
+    forNotLoaded: (l: NotLoaded) => TRes,
+    forLoadingInProgress: (l: LoadingInProgress) => TRes,
+    forLoaded: (l: Loaded<T>) => TRes,
+    forLoadingFailed: (l: LoadingFailed) => TRes){
+
+        switch(loadable.type){
+            case "loaded":
+                return forLoaded(loadable);
+            case "loadingfailed":
+                return forLoadingFailed(loadable);
+            case "loadinginprogress":
+                return forLoadingInProgress(loadable);
+            case "notloaded":
+                return forNotLoaded(loadable);
+        }
+}

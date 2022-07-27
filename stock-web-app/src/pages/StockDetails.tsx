@@ -2,7 +2,7 @@ import './StockDetails.scss';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
-import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock } from "../types/types";
+import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, SwitchLoadable } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 
@@ -25,16 +25,12 @@ function StockDetails(){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    switch(stock.type){
-        case "loaded":
-            return (<StockDetailsLoaded stock={stock.data} />);
-        case "loadingfailed":
-            return (<>Loading failed. Please refresh the page.</>);
-        case "loadinginprogress":
-            return (<>Loading...</>);
-        case "notloaded":
-            return (<>Not loaded.</>);
-    }
+    return SwitchLoadable(
+        stock,
+        _ => (<>Not loaded.</>),
+        _ => (<>Loading...</>),
+        l => (<StockDetailsLoaded stock={l.data} />),
+        _ => (<>Loading failed. Please refresh the page.</>));
 }
 
 function StockDetailsLoaded({stock} : {stock: Stock}){
