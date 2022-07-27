@@ -6,7 +6,6 @@ import { Line } from "react-chartjs-2";
 function StockChart() {
     const data : ChartData<"line", {x: Date, y: number}[]>= {
         datasets: [{
-          label: 'My First dataset',
           backgroundColor: '#067194',
           borderColor: '#067194', 
           data: [
@@ -45,6 +44,11 @@ function StockChart() {
                     unit: 'hour',
                     stepSize: 6
                 },
+            }
+        },
+        plugins:{
+            legend: {
+                display: false,
             }
         }
     }}/>);
