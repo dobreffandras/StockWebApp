@@ -57,33 +57,35 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                     </div>
                     <div className="additional-data">
                         <table>
-                            <tr>
-                                <td className='property-name'>Previous close:</td>
-                                <td>{stock.previousClose}</td>
-                            </tr>
-                            <tr>
-                                <td className='property-name'>Open:</td>
-                                <td>{stock.open}</td>
-                            </tr>
-                            <tr>
-                                <td className='property-name'>Daily range:</td>
-                                <td>{stock.dailyRange.low}-{stock.dailyRange.high}</td>
-                            </tr>
-                            <tr>
-                                <td className='property-name'>Yearly range:</td>
-                                <td>{stock.yearlyRange.low}-{stock.yearlyRange.high}</td>
-                            </tr>
-                            {   
-                                stock.dividend &&
-                                (<tr>
-                                    <td className='property-name'>Dividend (Yield):</td>
-                                    <td>{stock.dividend} ({stock.dividendYield}%)</td>
-                                </tr>)
-                            }
-                            <tr>
-                                <td className='property-name'>Market cap:</td>
-                                <td>{toBillion(stock.marketCap)}</td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td className='property-name'>Previous close:</td>
+                                    <td>{stock.previousClose}</td>
+                                </tr>
+                                <tr>
+                                    <td className='property-name'>Open:</td>
+                                    <td>{stock.open}</td>
+                                </tr>
+                                <tr>
+                                    <td className='property-name'>Daily range:</td>
+                                    <td>{stock.dailyRange.low}-{stock.dailyRange.high}</td>
+                                </tr>
+                                <tr>
+                                    <td className='property-name'>Yearly range:</td>
+                                    <td>{stock.yearlyRange.low}-{stock.yearlyRange.high}</td>
+                                </tr>
+                                {   
+                                    stock.dividend &&
+                                    (<tr>
+                                        <td className='property-name'>Dividend (Yield):</td>
+                                        <td>{stock.dividend} ({stock.dividendYield}%)</td>
+                                    </tr>)
+                                }
+                                <tr>
+                                    <td className='property-name'>Market cap:</td>
+                                    <td>{toBillion(stock.marketCap)}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
