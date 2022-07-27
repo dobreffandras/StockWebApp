@@ -88,7 +88,7 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                 </div>
                 <div className="chart-container">
                     <div className="chart">
-                        <StockChart />
+                        <StockChart symbol={stock.company.symbol} />
                     </div>
                 </div>
             </div>

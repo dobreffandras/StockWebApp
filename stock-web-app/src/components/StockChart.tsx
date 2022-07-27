@@ -3,36 +3,18 @@ import 'chartjs-adapter-moment';
 import { ChartData, ChartDataset, ChartDatasetProperties } from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from 'react';
+import Backendservice from '../services/backendservice';
 
-function StockChart() {
+function StockChart({symbol} : {symbol: string}) {
     const [dataPoints , setDataPoints] = useState<{x: Date, y: number}[]>([]);
+    const backendservice = new Backendservice();
 
     useEffect(()=>{
-        setDataPoints([
-            {
-                x: new Date('2016-12-25'),
-                y: 20
-            },
-            {
-                x: new Date('2016-12-26 8:00:00'),
-                y: 11
-            },
-            {
-                x: new Date('2016-12-26 10:00:00'),
-                y: 12
-            },
-            {
-                x: new Date('2016-12-26 11:00:00'),
-                y: 9
-            },
-            {
-                x: new Date('2016-12-26 12:00:00'),
-                y: 12
-            },
-            {
-                x: new Date('2016-12-30'),
-                y: 10
-            }]);
+        backendservice
+            .fetchStockPrices(symbol)
+            .then(prices =>{
+                setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
+            });
     }, []);
 
     const data: ChartData<"line", { x: Date, y: number }[]> = {
@@ -48,8 +30,8 @@ function StockChart() {
             xAxis: {
                 type: "time",
                 time: {
-                    unit: 'hour',
-                    stepSize: 6
+                    unit: 'day',
+                    stepSize: 1
                 },
             }
         },

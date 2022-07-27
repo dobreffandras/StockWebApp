@@ -38,6 +38,11 @@ export interface Stock {
     dividendYield: number | undefined
 }
 
+export interface StockPrice {
+    date: Date,
+    value: number
+}
+
 export type NotLoaded = { type: "notloaded"};
 export type LoadingInProgress = { type: "loadinginprogress"};
 export type Loaded<T> = {type: "loaded", data: T};
