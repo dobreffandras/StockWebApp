@@ -2,7 +2,7 @@ import './StockDetails.scss';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
-import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, SwitchLoadable } from "../types/types";
+import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, StockPriceInterval, SwitchLoadable } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 
@@ -34,6 +34,12 @@ function StockDetails(){
 }
 
 function StockDetailsLoaded({stock} : {stock: Stock}){
+    const [selectedInterval, setSelectedInterval] = useState("year");
+
+    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedInterval(event.target.value);
+    };
+
     const company = stock.company;
     return (
         <div className="stockPage">
@@ -87,8 +93,27 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                     </div>
                 </div>
                 <div className="chart-container">
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="day" 
+                            name="stockPriceInterval" 
+                            value={"day"}
+                            checked={selectedInterval === "day"} 
+                            onChange={radioHandler}/>
+
+                        <input 
+                            type="radio" 
+                            id="year" 
+                            name="stockPriceInterval" 
+                            value={"year"}
+                            checked={selectedInterval === "year"} 
+                            onChange={radioHandler}/>
+                    </div>
                     <div className="chart">
-                        <StockChart symbol={stock.company.symbol} />
+                        <StockChart 
+                            symbol={stock.company.symbol}
+                            interval={selectedInterval === "day" ? StockPriceInterval.day : StockPriceInterval.year} />
                     </div>
                 </div>
             </div>

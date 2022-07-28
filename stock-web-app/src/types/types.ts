@@ -37,6 +37,9 @@ export interface Stock {
     dividend: number | undefined,
     dividendYield: number | undefined
 }
+export enum StockPriceInterval{
+    year, day
+}
 
 export interface StockPrice {
     date: Date,

@@ -4,18 +4,29 @@ import { ChartData, ChartDataset, ChartDatasetProperties } from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from 'react';
 import Backendservice from '../services/backendservice';
+import { StockPriceInterval } from '../types/types';
 
-function StockChart({symbol} : {symbol: string}) {
+function StockChart({symbol, interval} : {symbol: string, interval: StockPriceInterval}) {
     const [dataPoints , setDataPoints] = useState<{x: Date, y: number}[]>([]);
     const backendservice = new Backendservice();
 
     useEffect(()=>{
-        backendservice
-            .fetchStockPrices(symbol)
+        console.log(interval);
+        if(interval === StockPriceInterval.day){
+            backendservice
+            .fetchStockDailyPrices(symbol)
             .then(prices =>{
                 setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
             });
-    }, []);
+        } else {
+            backendservice
+            .fetchStockYearlyPrices(symbol)
+            .then(prices =>{
+                setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
+            });
+        }
+        
+    }, [interval]);
 
     const data: ChartData<"line", { x: Date, y: number }[]> = {
         datasets: [{

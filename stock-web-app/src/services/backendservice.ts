@@ -20,8 +20,12 @@ class Backendservice {
         return fetchJson<Stock>(`${host}/stocks/${symbol}`);
     }
 
-    fetchStockPrices(symbol: string, interval : string = "year") {
-        return fetchJson<StockPrice[]>(`${host}/stocks/${symbol}/prices`, {interval: interval});
+    fetchStockYearlyPrices(symbol: string) {
+        return fetchJson<StockPrice[]>(`${host}/stocks/${symbol}/prices`, {interval: "year"});
+    }    
+
+    fetchStockDailyPrices(symbol: string) {
+        return fetchJson<StockPrice[]>(`${host}/stocks/${symbol}/prices`, {interval: "day"});
     }    
 }
 
