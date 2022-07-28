@@ -86,24 +86,7 @@ namespace StockWebApp.Controllers
         [HttpGet("{symbol}/prices")]
         public ActionResult<IEnumerable<StockPrice>> GetPrices(string symbol)
         {
-            var priceGenerator = new RandomStockValueGenerator();
-            var today = DateTime.Now;
-            var feed = () => priceGenerator.Generate();
-            var forces = Enumerable.Range(0, 5).Select(_ => priceGenerator.Generate()).ToArray();
-
-            if (stocks.TryGetValue(symbol, out var stock))
-            {
-                var stockPrices = stocksGenerator.GenerateDailyPrices(
-                    stock.Price,
-                    today.AddDays(-365),
-                    today,
-                    feed,
-                    forces);
-
-                return Ok(stockPrices);
-            }
-
-            return Ok(Array.Empty<StockPrice>());
+            return Ok(stocksGenerator.GetPricesFor(symbol));
         }
     }
 }
