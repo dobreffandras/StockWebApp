@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockWebApp.Dtos;
+using StockWebApp.Services;
 
 namespace StockWebApp.Controllers
 {
@@ -7,6 +8,11 @@ namespace StockWebApp.Controllers
     [Route("[controller]")]
     public class StocksController : ControllerBase
     {
+        public StocksController()
+        {
+            stocksGenerator = new StockPriceService();
+        }
+
         private readonly IDictionary<string, Stock> stocks 
             = new Dictionary<string, Stock>
                 {
@@ -50,6 +56,7 @@ namespace StockWebApp.Controllers
                             null,
                             null),
                 };
+        private StockPriceService stocksGenerator;
 
         [HttpGet]
         public IEnumerable<BasicStock> GetStocks()
@@ -77,16 +84,26 @@ namespace StockWebApp.Controllers
         }
 
         [HttpGet("{symbol}/prices")]
-        public ActionResult<IEnumerable<StockPrice>> GetPrices()
+        public ActionResult<IEnumerable<StockPrice>> GetPrices(string symbol)
         {
-            var random = new Random();
+            var priceGenerator = new RandomStockValueGenerator();
             var today = DateTime.Now;
-            return Ok(Enumerable.Range(0, 365)
-                .Select(dayNum =>
-                {
-                    var date = today.AddDays(-365 + dayNum);
-                    return new StockPrice(date, random.Next());
-                }));
+            var feed = () => priceGenerator.Generate();
+            var forces = Enumerable.Range(0, 5).Select(_ => priceGenerator.Generate()).ToArray();
+
+            if (stocks.TryGetValue(symbol, out var stock))
+            {
+                var stockPrices = stocksGenerator.GenerateDailyPrices(
+                    stock.Price,
+                    today.AddDays(-365),
+                    today,
+                    feed,
+                    forces);
+
+                return Ok(stockPrices);
+            }
+
+            return Ok(Array.Empty<StockPrice>());
         }
     }
 }
