@@ -18,9 +18,12 @@ namespace StockWebApp.Services
                 new StockPrice(startDate, startValue)
             };
 
-            for(var dayNum = 1; dayNum < totalDays; dayNum++)
+            var rate = forces.Length / totalDays;
+            for (var dayNum = 1; dayNum < totalDays; dayNum++)
             {
-                nextPriceGenerator.Force = forces[0];
+                var forceIdx = (int)(dayNum * rate);
+                var force = forces[forceIdx];
+                nextPriceGenerator.Force = force;
                 nextPriceGenerator.Generate();
                 stockPrices.Add(new StockPrice(startDate.AddDays(dayNum), nextPriceGenerator.Price));
             }
