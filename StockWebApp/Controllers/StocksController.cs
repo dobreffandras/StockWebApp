@@ -8,9 +8,9 @@ namespace StockWebApp.Controllers
     [Route("[controller]")]
     public class StocksController : ControllerBase
     {
-        public StocksController()
+        public StocksController(StocksService stocksService)
         {
-            stocksService = new StocksService();
+            this.stocksService = stocksService;
         }
 
         private StocksService stocksService;
