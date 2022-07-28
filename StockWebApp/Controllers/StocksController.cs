@@ -10,23 +10,23 @@ namespace StockWebApp.Controllers
     {
         public StocksController()
         {
-            stocksGenerator = new StockPriceService();
+            stocksService = new StocksService();
         }
 
-        private StockPriceService stocksGenerator;
+        private StocksService stocksService;
 
         [HttpGet]
         public IEnumerable<BasicStock> GetStocks()
         {
             Thread.Sleep(500);
-            return stocksGenerator.GetStocks();
+            return stocksService.GetStocks();
         }
 
         [HttpGet("{symbol}")]
         public ActionResult<Stock> GetStock(string symbol)
         {
             Thread.Sleep(500);
-            if(stocksGenerator.GetStock(symbol) is { } stock)
+            if(stocksService.GetStock(symbol) is { } stock)
             {
                 return Ok(stock);
             }
@@ -37,7 +37,7 @@ namespace StockWebApp.Controllers
         [HttpGet("{symbol}/prices")]
         public ActionResult<IEnumerable<StockPrice>> GetPrices(string symbol)
         {
-            return Ok(stocksGenerator.GetPricesFor(symbol));
+            return Ok(stocksService.GetPricesFor(symbol));
         }
     }
 }

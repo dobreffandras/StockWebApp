@@ -2,7 +2,7 @@
 
 namespace StockWebApp.Services
 {
-    public class StockPriceService
+    public class StocksService
     {
         private readonly IDictionary<string, Stock> stocks
             = new Dictionary<string, Stock>

@@ -6,11 +6,11 @@ namespace StockWebAppTest
 {
     public class StockPriceServiceTests
     {
-        private readonly StockPriceService sut;
+        private readonly StocksService sut;
 
         public StockPriceServiceTests()
         {
-            sut = new StockPriceService();
+            sut = new StocksService();
         }
 
         [Fact]
