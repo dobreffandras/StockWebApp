@@ -99,8 +99,7 @@ namespace StockWebApp.Services
             
             return GeneratePrices(
                 startPrice,
-                aYearAgo,
-                today,
+                DatesBetween(aYearAgo, today),
                 priceDeltaGenerator.Generate,
                 forces);
         }
@@ -108,29 +107,35 @@ namespace StockWebApp.Services
         // Exposed only for testing purposes
         public IEnumerable<StockPrice> GeneratePrices(
             double startValue, 
-            DateTime startDate, 
-            DateTime endDate, 
+            DateTime[] timePoints,
             Func<double> randomFeed,
             double[] forces)
         {
             var nextPriceGenerator = new NextPriceGenerator(startValue, randomFeed);
-            var totalDays = (endDate - startDate).TotalDays;
+            var totalTimePoints = timePoints.Length;
             var stockPrices = new List<StockPrice>
             {
-                new StockPrice(startDate, startValue)
+                new StockPrice(timePoints[0], startValue)
             };
 
-            var rate = forces.Length / totalDays;
-            for (var dayNum = 1; dayNum < totalDays; dayNum++)
+            var rate =  (double)forces.Length / totalTimePoints;
+            for (var timePointNum = 1; timePointNum < totalTimePoints; timePointNum++)
             {
-                var forceIdx = (int)(dayNum * rate);
+                var forceIdx = (int)(timePointNum * rate);
                 var force = forces[forceIdx];
                 nextPriceGenerator.Force = force;
                 nextPriceGenerator.Generate();
-                stockPrices.Add(new StockPrice(startDate.AddDays(dayNum), nextPriceGenerator.Price));
+                stockPrices.Add(new StockPrice(timePoints[timePointNum], nextPriceGenerator.Price));
             }
 
             return stockPrices;
+        }
+
+        private static DateTime[] DatesBetween(DateTime startDate, DateTime endDate)
+        {
+            return Enumerable.Range(0, endDate.Subtract(startDate).Days)
+              .Select(offset => startDate.AddDays(offset))
+              .ToArray();
         }
     }
 }

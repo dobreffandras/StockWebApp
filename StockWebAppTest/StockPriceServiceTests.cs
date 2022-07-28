@@ -7,10 +7,20 @@ namespace StockWebAppTest
     public class StockPriceServiceTests
     {
         private readonly StocksService sut;
+        private readonly DateTime[] dates;
 
         public StockPriceServiceTests()
         {
             sut = new StocksService();
+            var startDate = DateTime.Now;
+            dates = new[]
+            {
+                startDate.AddDays(0),
+                startDate.AddDays(1),
+                startDate.AddDays(2),
+                startDate.AddDays(3),
+                startDate.AddDays(4),
+            };
         }
 
         [Fact]
@@ -23,8 +33,7 @@ namespace StockWebAppTest
             // When
             var prices = sut.GeneratePrices(
                 startPrice,
-                startDate: startDate,
-                endDate: startDate.AddDays(5),
+                dates,
                 randomFeed: () => 0,
                 forces: new [] { 0.0 });
 
@@ -32,11 +41,11 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(startDate.AddDays(0), startPrice),
-                    new StockPrice(startDate.AddDays(1), startPrice),
-                    new StockPrice(startDate.AddDays(2), startPrice),
-                    new StockPrice(startDate.AddDays(3), startPrice),
-                    new StockPrice(startDate.AddDays(4), startPrice),
+                    new StockPrice(dates[0], startPrice),
+                    new StockPrice(dates[1], startPrice),
+                    new StockPrice(dates[2], startPrice),
+                    new StockPrice(dates[3], startPrice),
+                    new StockPrice(dates[4], startPrice),
                 };
 
             prices.Should().BeEquivalentTo(expected);
@@ -53,8 +62,7 @@ namespace StockWebAppTest
             // When
             var prices = sut.GeneratePrices(
                 startPrice,
-                startDate: startDate,
-                endDate: startDate.AddDays(5),
+                dates,
                 randomFeed: () => constant,
                 forces: new[] { 0.0 });
 
@@ -62,11 +70,11 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(startDate.AddDays(0), startPrice + 0 * constant),
-                    new StockPrice(startDate.AddDays(1), startPrice + 1 * constant),
-                    new StockPrice(startDate.AddDays(2), startPrice + 2 * constant),
-                    new StockPrice(startDate.AddDays(3), startPrice + 3 * constant),
-                    new StockPrice(startDate.AddDays(4), startPrice + 4 * constant),
+                    new StockPrice(dates[0], startPrice + 0 * constant),
+                    new StockPrice(dates[1], startPrice + 1 * constant),
+                    new StockPrice(dates[2], startPrice + 2 * constant),
+                    new StockPrice(dates[3], startPrice + 3 * constant),
+                    new StockPrice(dates[4], startPrice + 4 * constant),
                 };
 
             prices.Should().BeEquivalentTo(expected);
@@ -84,8 +92,7 @@ namespace StockWebAppTest
             // When
             var prices = sut.GeneratePrices(
                 startPrice,
-                startDate: startDate,
-                endDate: startDate.AddDays(5),
+                dates,
                 randomFeed: () =>
                 {
                     feedEnumberator.MoveNext();
@@ -97,11 +104,11 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(startDate.AddDays(0), 152.34),
-                    new StockPrice(startDate.AddDays(1), 152.37),
-                    new StockPrice(startDate.AddDays(2), 152.38),
-                    new StockPrice(startDate.AddDays(3), 152.33),
-                    new StockPrice(startDate.AddDays(4), 152.34),
+                    new StockPrice(dates[0], 152.34),
+                    new StockPrice(dates[1], 152.37),
+                    new StockPrice(dates[2], 152.38),
+                    new StockPrice(dates[3], 152.33),
+                    new StockPrice(dates[4], 152.34),
                 };
 
             prices.Should().BeEquivalentTo(
@@ -121,8 +128,7 @@ namespace StockWebAppTest
             // When
             var prices = sut.GeneratePrices(
                 startPrice,
-                startDate: startDate,
-                endDate: startDate.AddDays(5),
+                dates,
                 () =>
                 {
                     feedEnumberator.MoveNext();
@@ -134,11 +140,11 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(startDate.AddDays(0), 152.34),
-                    new StockPrice(startDate.AddDays(1), 152.42),
-                    new StockPrice(startDate.AddDays(2), 152.48),
-                    new StockPrice(startDate.AddDays(3), 152.48),
-                    new StockPrice(startDate.AddDays(4), 152.54),
+                    new StockPrice(dates[0], 152.34),
+                    new StockPrice(dates[1], 152.42),
+                    new StockPrice(dates[2], 152.48),
+                    new StockPrice(dates[3], 152.48),
+                    new StockPrice(dates[4], 152.54),
                 };
 
             prices.Should().BeEquivalentTo(
@@ -158,8 +164,7 @@ namespace StockWebAppTest
             // When
             var prices = sut.GeneratePrices(
                 startPrice,
-                startDate: startDate,
-                endDate: startDate.AddDays(5),
+                dates,
                 () =>
                 {
                     feedEnumberator.MoveNext();
@@ -171,11 +176,11 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(startDate.AddDays(0), 152.34), 
-                    new StockPrice(startDate.AddDays(1), 152.42), // +0.05 +0.03
-                    new StockPrice(startDate.AddDays(2), 152.48), // +0.05 +0.01
-                    new StockPrice(startDate.AddDays(3), 152.36), // -0.07 -0.05
-                    new StockPrice(startDate.AddDays(4), 152.30), // -0.07 +0.01
+                    new StockPrice(dates[0], 152.34), 
+                    new StockPrice(dates[1], 152.42), // +0.05 +0.03
+                    new StockPrice(dates[2], 152.48), // +0.05 +0.01
+                    new StockPrice(dates[3], 152.36), // -0.07 -0.05
+                    new StockPrice(dates[4], 152.30), // -0.07 +0.01
                 };
 
             prices.Should().BeEquivalentTo(
