@@ -48,6 +48,27 @@ namespace StockWebApp.Services
                             null),
             };
 
+        public IEnumerable<BasicStock> GetStocks()
+        {
+            return stocks.Values.Select(
+                stock => new BasicStock(
+                    stock.Company,
+                    stock.Price,
+                    stock.Currency,
+                    stock.ChangePoint,
+                    stock.ChangePercent));
+        }
+
+        public Stock? GetStock(string symbol)
+        {
+            if (stocks.TryGetValue(symbol, out var stock))
+            {
+                return stock;
+            }
+
+            return null;
+        }
+
         public IEnumerable<StockPrice> GetPricesFor(string symbol)
         {
             IEnumerable<StockPrice> prices = null;
