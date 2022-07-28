@@ -6,6 +6,7 @@ namespace StockWebApp.Services
     {
         private readonly IDictionary<string, Stock> stocks;
         private readonly IDictionary<string, IEnumerable<StockPrice>> yearlyPrices;
+        private readonly IDictionary<string, IEnumerable<StockPrice>> dailyPrices;
 
         public StocksService()
         {
@@ -56,7 +57,12 @@ namespace StockWebApp.Services
                 stocks.ToDictionary(
                     x => x.Key,
                     x => GenerateYearlyPrices(x.Value.Price));
-    }
+
+            dailyPrices =
+                stocks.ToDictionary(
+                    x => x.Key,
+                    x => GenerateDailyPrices(x.Value.Price));
+        }
 
 
         public IEnumerable<BasicStock> GetStocks()
@@ -80,11 +86,21 @@ namespace StockWebApp.Services
             return null;
         }
 
-        public IEnumerable<StockPrice> GetPricesFor(string symbol)
+        public IEnumerable<StockPrice> GetYearlyPricesFor(string symbol)
         {
             if(stocks.TryGetValue(symbol, out var stock))
             {
                 return yearlyPrices[stock.Company.Symbol];
+            }
+
+            return Array.Empty<StockPrice>();
+        }
+
+        public IEnumerable<StockPrice> GetDailyPricesFor(string symbol)
+        {
+            if (stocks.TryGetValue(symbol, out var stock))
+            {
+                return dailyPrices[stock.Company.Symbol];
             }
 
             return Array.Empty<StockPrice>();
@@ -100,6 +116,20 @@ namespace StockWebApp.Services
             return GeneratePrices(
                 startPrice,
                 DatesBetween(aYearAgo, today),
+                priceDeltaGenerator.Generate,
+                forces);
+        }
+
+        private IEnumerable<StockPrice> GenerateDailyPrices(double startPrice)
+        {
+            var priceDeltaGenerator = new RandomPriceDeltaGenerator();
+            var today = DateTime.Now;
+            var yesterday = today.AddDays(-1);
+            var forces = Enumerable.Range(0, new Random().Next(1, 11)).Select(_ => priceDeltaGenerator.Generate()).ToArray();
+
+            return GeneratePrices(
+                startPrice,
+                MinutesBetween(yesterday, today),
                 priceDeltaGenerator.Generate,
                 forces);
         }
@@ -135,6 +165,13 @@ namespace StockWebApp.Services
         {
             return Enumerable.Range(0, endDate.Subtract(startDate).Days)
               .Select(offset => startDate.AddDays(offset))
+              .ToArray();
+        }
+
+        private static DateTime[] MinutesBetween(DateTime startDate, DateTime endDate)
+        {
+            return Enumerable.Range(0, (int)endDate.Subtract(startDate).TotalMinutes)
+              .Select(offset => startDate.AddMinutes(offset))
               .ToArray();
         }
     }

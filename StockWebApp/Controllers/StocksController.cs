@@ -34,10 +34,25 @@ namespace StockWebApp.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Gets the prices of the specified stock for a yearly or daily range.
+        /// Yearly prices will be sampled on daily bases. Daily prices will be sampled on minute basis.
+        /// </summary>
+        /// <param name="symbol">The symbol of the stock</param>
+        /// <param name="interval">Either "day" for daily sampling or anything else for yearly sampling</param>
         [HttpGet("{symbol}/prices")]
-        public ActionResult<IEnumerable<StockPrice>> GetPrices(string symbol)
+        public ActionResult<IEnumerable<StockPrice>> GetPrices(
+            string symbol,
+            [FromQuery] string interval)
         {
-            return Ok(stocksService.GetPricesFor(symbol));
+            if(interval == "day")
+            {
+                return Ok(stocksService.GetDailyPricesFor(symbol));
+            } else
+            {
+                return Ok(stocksService.GetYearlyPricesFor(symbol));
+            }
+            
         }
     }
 }
