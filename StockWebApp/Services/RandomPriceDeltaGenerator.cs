@@ -1,10 +1,10 @@
 ﻿namespace StockWebApp.Services
 {
-    public class RandomStockValueGenerator
+    public class RandomPriceDeltaGenerator
     {
         private readonly Random random;
 
-        public RandomStockValueGenerator()
+        public RandomPriceDeltaGenerator()
         {
             random = new Random();
         }

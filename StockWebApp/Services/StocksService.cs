@@ -4,8 +4,12 @@ namespace StockWebApp.Services
 {
     public class StocksService
     {
-        private readonly IDictionary<string, Stock> stocks
-            = new Dictionary<string, Stock>
+        private readonly IDictionary<string, Stock> stocks;
+        private readonly IDictionary<string, IEnumerable<StockPrice>> yearlyPrices;
+
+        public StocksService()
+        {
+            stocks = new Dictionary<string, Stock>
             {
                 ["AAPL"] = new Stock(
                             new Company("AAPL", "NASDAQ", "Apple Inc."),
@@ -48,6 +52,13 @@ namespace StockWebApp.Services
                             null),
             };
 
+            yearlyPrices = 
+                stocks.ToDictionary(
+                    x => x.Key,
+                    x => GenerateYearlyPrices(x.Value.Price));
+    }
+
+
         public IEnumerable<BasicStock> GetStocks()
         {
             return stocks.Values.Select(
@@ -71,29 +82,31 @@ namespace StockWebApp.Services
 
         public IEnumerable<StockPrice> GetPricesFor(string symbol)
         {
-            IEnumerable<StockPrice> prices = null;
-            var priceGenerator = new RandomStockValueGenerator();
-            var today = DateTime.Now;
-            var forces = Enumerable.Range(0, 5).Select(_ => priceGenerator.Generate()).ToArray();
-
-            if (stocks.TryGetValue(symbol, out var stock))
+            if(stocks.TryGetValue(symbol, out var stock))
             {
-                prices = GenerateDailyPrices(
-                    stock.Price,
-                    today.AddDays(-365),
-                    today,
-                    priceGenerator.Generate,
-                    forces);
-            }
-            else
-            {
-                prices = Array.Empty<StockPrice>();
+                return yearlyPrices[stock.Company.Symbol];
             }
 
-            return prices;
+            return Array.Empty<StockPrice>();
         }
 
-        public IEnumerable<StockPrice> GenerateDailyPrices(
+        private IEnumerable<StockPrice> GenerateYearlyPrices(double startPrice)
+        {
+            var priceDeltaGenerator = new RandomPriceDeltaGenerator();
+            var today = DateTime.Now;
+            var aYearAgo = today.AddYears(-1);
+            var forces = Enumerable.Range(0, new Random().Next(1, 11)).Select(_ => priceDeltaGenerator.Generate()).ToArray();
+            
+            return GeneratePrices(
+                startPrice,
+                aYearAgo,
+                today,
+                priceDeltaGenerator.Generate,
+                forces);
+        }
+
+        // Exposed only for testing purposes
+        public IEnumerable<StockPrice> GeneratePrices(
             double startValue, 
             DateTime startDate, 
             DateTime endDate, 

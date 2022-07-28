@@ -21,7 +21,7 @@ namespace StockWebAppTest
             var startPrice = 152.34;
 
             // When
-            var prices = sut.GenerateDailyPrices(
+            var prices = sut.GeneratePrices(
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
@@ -51,7 +51,7 @@ namespace StockWebAppTest
             var constant = 0.03;
 
             // When
-            var prices = sut.GenerateDailyPrices(
+            var prices = sut.GeneratePrices(
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
@@ -82,7 +82,7 @@ namespace StockWebAppTest
             var feedEnumberator = feeds.GetEnumerator();
 
             // When
-            var prices = sut.GenerateDailyPrices(
+            var prices = sut.GeneratePrices(
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
@@ -119,7 +119,7 @@ namespace StockWebAppTest
             var feedEnumberator = feeds.GetEnumerator();
 
             // When
-            var prices = sut.GenerateDailyPrices(
+            var prices = sut.GeneratePrices(
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
@@ -156,7 +156,7 @@ namespace StockWebAppTest
             var feedEnumberator = feeds.GetEnumerator();
 
             // When
-            var prices = sut.GenerateDailyPrices(
+            var prices = sut.GeneratePrices(
                 startPrice,
                 startDate: startDate,
                 endDate: startDate.AddDays(5),
