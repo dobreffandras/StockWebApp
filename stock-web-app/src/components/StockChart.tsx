@@ -6,9 +6,18 @@ import { useEffect, useState } from 'react';
 import Backendservice from '../services/backendservice';
 import { StockPriceInterval } from '../types/types';
 
+type StockChartState = {
+    chartConfig: {
+        unit: TimeUnit
+    },
+    dataPoints: {x: Date, y: number}[],
+}
+
 function StockChart({symbol, interval} : {symbol: string, interval: StockPriceInterval}) {
-    const [chartConfig, setChartConfig] = useState<{unit: TimeUnit}>({unit: "day"});
-    const [dataPoints , setDataPoints] = useState<{x: Date, y: number}[]>([]);
+    const [state, setState] = useState<StockChartState>({
+        chartConfig: {unit: "day"},
+        dataPoints: []
+    });
     const backendservice = new Backendservice();
 
     useEffect(()=>{
@@ -17,15 +26,19 @@ function StockChart({symbol, interval} : {symbol: string, interval: StockPriceIn
             backendservice
             .fetchStockDailyPrices(symbol)
             .then(prices =>{
-                setChartConfig({unit: "hour"});
-                setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
+                setState({
+                    chartConfig: {unit: "hour"},
+                    dataPoints: prices.map(p => ({x: p.date, y: p.value}))
+                })
             });
         } else {
             backendservice
             .fetchStockYearlyPrices(symbol)
             .then(prices =>{
-                setChartConfig({unit: "day"});
-                setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
+                setState({
+                    chartConfig: {unit: "day"},
+                    dataPoints: prices.map(p => ({x: p.date, y: p.value}))
+                })
             });
         }
         
@@ -35,7 +48,7 @@ function StockChart({symbol, interval} : {symbol: string, interval: StockPriceIn
         datasets: [{
             backgroundColor: '#067194',
             borderColor: '#067194',
-            data: dataPoints,
+            data: state.dataPoints,
         }]
     };
 
@@ -44,7 +57,7 @@ function StockChart({symbol, interval} : {symbol: string, interval: StockPriceIn
             xAxis: {
                 type: "time",
                 time: {
-                    unit: chartConfig.unit,
+                    unit: state.chartConfig.unit,
                     stepSize: 1
                 },
             }
