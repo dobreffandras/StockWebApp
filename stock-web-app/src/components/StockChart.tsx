@@ -62,6 +62,7 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
                 },
             }
         },
+        animation: false,
         plugins: {
             legend: {
                 display: false,
