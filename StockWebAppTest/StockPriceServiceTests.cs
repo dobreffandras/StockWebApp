@@ -8,6 +8,7 @@ namespace StockWebAppTest
     {
         private readonly StocksService sut;
         private readonly DateTime[] dates;
+        private readonly DateTime[] hours;
 
         public StockPriceServiceTests()
         {
@@ -21,13 +22,19 @@ namespace StockWebAppTest
                 startDate.AddDays(3),
                 startDate.AddDays(4),
             };
+            hours = new[]{
+                startDate.AddHours(0),
+                startDate.AddHours(1),
+                startDate.AddHours(2),
+                startDate.AddHours(3),
+                startDate.AddHours(4),
+            };
         }
 
         [Fact]
         public void Generates_SameValues_For_Zero_Feed()
         {
             // Given
-            var startDate = DateTime.Now;
             var startPrice = 152.34;
 
             // When
@@ -55,7 +62,6 @@ namespace StockWebAppTest
         public void Generates_increasing_values_For_Constant_Feed()
         {
             // Given
-            var startDate = DateTime.Now;
             var startPrice = 152.34;
             var constant = 0.03;
 
@@ -84,7 +90,6 @@ namespace StockWebAppTest
         public void Generates_increasing_values_For_variable_Feed()
         {
             // Given
-            var startDate = DateTime.Now;
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
             var feedEnumberator = feeds.GetEnumerator();
@@ -120,7 +125,6 @@ namespace StockWebAppTest
         public void Generates_increasing_values_For_variable_Feed_Affected_by_Force()
         {
             // Given
-            var startDate = DateTime.Now;
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
             var feedEnumberator = feeds.GetEnumerator();
@@ -153,10 +157,9 @@ namespace StockWebAppTest
         }
 
         [Fact]
-        public void Generates_values_For_variable_Feed_Affected_by_Variable_Forces()
+        public void Generates_values_for_days_with_variable_Feed_Affected_by_Variable_Forces()
         {
             // Given
-            var startDate = DateTime.Now;
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
             var feedEnumberator = feeds.GetEnumerator();
@@ -176,11 +179,46 @@ namespace StockWebAppTest
             var expected =
                 new[]
                 {
-                    new StockPrice(dates[0], 152.34), 
+                    new StockPrice(dates[0], 152.34),
                     new StockPrice(dates[1], 152.42), // +0.05 +0.03
                     new StockPrice(dates[2], 152.48), // +0.05 +0.01
                     new StockPrice(dates[3], 152.36), // -0.07 -0.05
                     new StockPrice(dates[4], 152.30), // -0.07 +0.01
+                };
+
+            prices.Should().BeEquivalentTo(
+                expected,
+                o => o.Using<double>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.001)).WhenTypeIs<double>());
+        }
+
+        [Fact]
+        public void Generates_values_for_hours_with_variable_Feed_Affected_by_Variable_Forces()
+        {
+            // Given
+            var startPrice = 152.34;
+            var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
+            var feedEnumberator = feeds.GetEnumerator();
+
+            // When
+            var prices = sut.GeneratePrices(
+                startPrice,
+                hours,
+                () =>
+                {
+                    feedEnumberator.MoveNext();
+                    return feedEnumberator.Current;
+                },
+                forces: new[] { 0.05, -0.07 });
+
+            // Then
+            var expected =
+                new[]
+                {
+                    new StockPrice(hours[0], 152.34),
+                    new StockPrice(hours[1], 152.42), // +0.05 +0.03
+                    new StockPrice(hours[2], 152.48), // +0.05 +0.01
+                    new StockPrice(hours[3], 152.36), // -0.07 -0.05
+                    new StockPrice(hours[4], 152.30), // -0.07 +0.01
                 };
 
             prices.Should().BeEquivalentTo(
