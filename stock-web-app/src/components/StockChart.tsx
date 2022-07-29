@@ -21,7 +21,6 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
     const backendservice = new Backendservice();
 
     useEffect(() => {
-        console.log(interval);
         if (interval === StockPriceInterval.day) {
             backendservice
                 .fetchStockDailyPrices(symbol)
