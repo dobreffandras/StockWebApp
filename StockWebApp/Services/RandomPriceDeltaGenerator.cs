@@ -9,6 +9,9 @@
             random = new Random();
         }
 
+        /// <summary>
+        /// Generates a value between -1.0 and 1.0
+        /// </summary>
         public double Generate()
         {
             var source = random.NextDouble();
