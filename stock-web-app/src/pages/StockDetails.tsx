@@ -93,22 +93,27 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                     </div>
                 </div>
                 <div className="chart-container">
-                    <div>
-                        <input
-                            type="radio"
-                            id="day"
-                            name="stockPriceInterval"
-                            value={"day"}
-                            checked={selectedInterval === "day"}
-                            onChange={radioHandler} />
-
-                        <input
-                            type="radio"
-                            id="year"
-                            name="stockPriceInterval"
-                            value={"year"}
-                            checked={selectedInterval === "year"}
-                            onChange={radioHandler} />
+                    <div className='interval-selector'>
+                        <div className='interval-element'>
+                            <input
+                                type="radio"
+                                id="day"
+                                name="stockPriceInterval"
+                                value={"day"}
+                                checked={selectedInterval === "day"}
+                                onChange={radioHandler} />
+                            <label htmlFor="day">1 Day</label>
+                        </div>
+                        <div className='interval-element'>
+                            <input
+                                type="radio"
+                                id="year"
+                                name="stockPriceInterval"
+                                value={"year"}
+                                checked={selectedInterval === "year"}
+                                onChange={radioHandler} />
+                            <label htmlFor="year">1 Year</label>
+                        </div>
                     </div>
                     <div className="chart">
                         <StockChart

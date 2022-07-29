@@ -75,6 +75,37 @@
             width: 100%;
             min-width: 800px;
             border: 1px solid lightblue;
+            
+            .interval-selector {
+                display: flex;
+                margin: 5px auto;
+                width: fit-content;
+
+                .interval-element{
+                    
+                    input[type=radio] {
+                        display: none;
+
+                        &:checked + label {
+                            background-color: lightblue;
+                        }
+                    }
+
+                    label {
+                        display: block;
+                        margin: 5px;
+                        padding: 5px;
+                        border-radius: 3px;
+                        background-color: whitesmoke;
+                        cursor: pointer;
+                        transition: 0.3s;
+
+                        &:hover{
+                             background-color: lightblue;
+                        }
+                    }
+                }
+            }
 
             .chart {
                 margin: auto;
