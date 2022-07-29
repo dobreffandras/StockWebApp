@@ -6,10 +6,10 @@ import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, S
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 
-function StockDetails(){
+function StockDetails() {
     const { symbol } = useParams();
     const backendservice = new Backendservice();
-    
+
     const [stock, setStock] = useState<Loadable<Stock>>(NotLoaded);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ function StockDetails(){
                 console.log(err);
                 setStock(LoadingFailed(err));
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return SwitchLoadable(
@@ -33,7 +33,7 @@ function StockDetails(){
         _ => (<>Loading failed. Please refresh the page.</>));
 }
 
-function StockDetailsLoaded({stock} : {stock: Stock}){
+function StockDetailsLoaded({ stock }: { stock: Stock }) {
     const [selectedInterval, setSelectedInterval] = useState("year");
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
             <header>
                 <a className='back-to-dashboard' href='/'>← Dashboard</a>
                 <h1 className='company-name'>{stock.company.name}</h1>
-                <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
+                <div className='sub-header'>({company.symbol}) @{company.exchange}</div>
             </header>
             <div className="content">
                 <div className="left-sidebar">
@@ -77,7 +77,7 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                                     <td className='property-name'>Yearly range:</td>
                                     <td>{stock.yearlyRange.low}-{stock.yearlyRange.high}</td>
                                 </tr>
-                                {   
+                                {
                                     stock.dividend &&
                                     (<tr>
                                         <td className='property-name'>Dividend (Yield):</td>
@@ -94,33 +94,36 @@ function StockDetailsLoaded({stock} : {stock: Stock}){
                 </div>
                 <div className="chart-container">
                     <div>
-                        <input 
-                            type="radio" 
-                            id="day" 
-                            name="stockPriceInterval" 
+                        <input
+                            type="radio"
+                            id="day"
+                            name="stockPriceInterval"
                             value={"day"}
-                            checked={selectedInterval === "day"} 
-                            onChange={radioHandler}/>
+                            checked={selectedInterval === "day"}
+                            onChange={radioHandler} />
 
-                        <input 
-                            type="radio" 
-                            id="year" 
-                            name="stockPriceInterval" 
+                        <input
+                            type="radio"
+                            id="year"
+                            name="stockPriceInterval"
                             value={"year"}
-                            checked={selectedInterval === "year"} 
-                            onChange={radioHandler}/>
+                            checked={selectedInterval === "year"}
+                            onChange={radioHandler} />
                     </div>
                     <div className="chart">
-                        <StockChart 
+                        <StockChart
                             symbol={stock.company.symbol}
-                            interval={selectedInterval === "day" ? StockPriceInterval.day : StockPriceInterval.year} />
+                            interval={
+                                selectedInterval === "day"
+                                    ? StockPriceInterval.day
+                                    : StockPriceInterval.year} />
                     </div>
                 </div>
             </div>
         </div>);
 }
 
-function toBillion(n: number){
+function toBillion(n: number) {
     var converted = n / 1_000_000_000;
     return `${converted} B`;
 }
