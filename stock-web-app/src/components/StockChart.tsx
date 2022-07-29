@@ -1,12 +1,13 @@
 import 'chart.js/auto';
 import 'chartjs-adapter-moment';
-import { ChartData, ChartDataset, ChartDatasetProperties } from 'chart.js/auto';
+import { ChartData, ChartDataset, ChartDatasetProperties, TimeUnit } from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from 'react';
 import Backendservice from '../services/backendservice';
 import { StockPriceInterval } from '../types/types';
 
 function StockChart({symbol, interval} : {symbol: string, interval: StockPriceInterval}) {
+    const [chartConfig, setChartConfig] = useState<{unit: TimeUnit}>({unit: "day"});
     const [dataPoints , setDataPoints] = useState<{x: Date, y: number}[]>([]);
     const backendservice = new Backendservice();
 
@@ -16,12 +17,14 @@ function StockChart({symbol, interval} : {symbol: string, interval: StockPriceIn
             backendservice
             .fetchStockDailyPrices(symbol)
             .then(prices =>{
+                setChartConfig({unit: "hour"});
                 setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
             });
         } else {
             backendservice
             .fetchStockYearlyPrices(symbol)
             .then(prices =>{
+                setChartConfig({unit: "day"});
                 setDataPoints(prices.map(p => ({x: p.date, y: p.value})));
             });
         }
@@ -41,7 +44,7 @@ function StockChart({symbol, interval} : {symbol: string, interval: StockPriceIn
             xAxis: {
                 type: "time",
                 time: {
-                    unit: 'day',
+                    unit: chartConfig.unit,
                     stepSize: 1
                 },
             }
