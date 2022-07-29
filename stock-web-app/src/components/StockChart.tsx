@@ -1,6 +1,6 @@
 import 'chart.js/auto';
 import 'chartjs-adapter-moment';
-import { ChartData, ChartDataset, ChartDatasetProperties, TimeUnit } from 'chart.js/auto';
+import { ChartData, TimeUnit } from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from 'react';
 import Backendservice from '../services/backendservice';
@@ -10,38 +10,38 @@ type StockChartState = {
     chartConfig: {
         unit: TimeUnit
     },
-    dataPoints: {x: Date, y: number}[],
+    dataPoints: { x: Date, y: number }[],
 }
 
-function StockChart({symbol, interval} : {symbol: string, interval: StockPriceInterval}) {
+function StockChart({ symbol, interval }: { symbol: string, interval: StockPriceInterval }) {
     const [state, setState] = useState<StockChartState>({
-        chartConfig: {unit: "day"},
+        chartConfig: { unit: "day" },
         dataPoints: []
     });
     const backendservice = new Backendservice();
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(interval);
-        if(interval === StockPriceInterval.day){
+        if (interval === StockPriceInterval.day) {
             backendservice
-            .fetchStockDailyPrices(symbol)
-            .then(prices =>{
-                setState({
-                    chartConfig: {unit: "hour"},
-                    dataPoints: prices.map(p => ({x: p.date, y: p.value}))
-                })
-            });
+                .fetchStockDailyPrices(symbol)
+                .then(prices => {
+                    setState({
+                        chartConfig: { unit: "hour" },
+                        dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
+                    })
+                });
         } else {
             backendservice
-            .fetchStockYearlyPrices(symbol)
-            .then(prices =>{
-                setState({
-                    chartConfig: {unit: "day"},
-                    dataPoints: prices.map(p => ({x: p.date, y: p.value}))
-                })
-            });
+                .fetchStockYearlyPrices(symbol)
+                .then(prices => {
+                    setState({
+                        chartConfig: { unit: "day" },
+                        dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
+                    })
+                });
         }
-        
+
     }, [interval]);
 
     const data: ChartData<"line", { x: Date, y: number }[]> = {
