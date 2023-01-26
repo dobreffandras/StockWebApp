@@ -114,13 +114,16 @@ namespace StockWebApp.Services
         {
             if (stocks.TryGetValue(symbol, out var stock))
             {
-                var newPrice = stock.Price;
+                var nextPriceGenerator = 
+                    new NextPriceGenerator(
+                        stock.Price, 
+                        new RandomPriceDeltaGenerator().Generate);
                 while (!ct.IsCancellationRequested)
                 {
-                    newPrice += 1.2;
                     await Task.Delay(500, ct);
+                    nextPriceGenerator.Generate();
                     await updatePrice(
-                        new StockPrice(DateTime.UtcNow, newPrice));
+                        new StockPrice(DateTime.UtcNow, nextPriceGenerator.Price));
                 }
             }
             // TODO return bad request for missing symbol

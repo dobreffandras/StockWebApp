@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockWebApp.Dtos;
 using StockWebApp.Services;
-using System.Net.WebSockets;
-using System.Text;
 
 namespace StockWebApp.Controllers
 {
