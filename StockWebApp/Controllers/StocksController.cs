@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockWebApp.Dtos;
 using StockWebApp.Services;
+using System.Net.WebSockets;
+using System.Text;
 
 namespace StockWebApp.Controllers
 {
@@ -18,14 +20,14 @@ namespace StockWebApp.Controllers
         [HttpGet]
         public IEnumerable<BasicStock> GetStocks()
         {
-            Thread.Sleep(500);
+            Thread.Sleep(500); // simulate latency
             return stocksService.GetStocks();
         }
 
         [HttpGet("{symbol}")]
         public ActionResult<Stock> GetStock(string symbol)
         {
-            Thread.Sleep(500);
+            Thread.Sleep(500); // simulate latency
             if(stocksService.GetStock(symbol) is { } stock)
             {
                 return Ok(stock);
@@ -53,6 +55,64 @@ namespace StockWebApp.Controllers
                 return Ok(stocksService.GetYearlyPricesFor(symbol));
             }
             
+        }
+
+        [HttpGet("/ws")]
+        public async Task Get()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                await Echo(webSocket);
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            }
+        }
+
+        private async Task Echo(WebSocket webSocket)
+        {
+            var ctSource = new CancellationTokenSource();
+            var closeTask = CancelOnCloseMessageReceived(webSocket, ctSource);
+            var senderTask = SendPriceUpdates(webSocket, ctSource.Token);
+
+            await Task.WhenAny(closeTask, senderTask);
+            await webSocket.CloseAsync(
+                closeStatus: WebSocketCloseStatus.NormalClosure,
+                statusDescription: "Socket state changed",
+                CancellationToken.None);
+        }
+
+        private Task SendPriceUpdates(
+            WebSocket webSocket,
+            CancellationToken cancellationToken) 
+            => stocksService.AttachLivePriceListener(
+                newPrice =>
+                {
+                    var bytes = Encoding.Default.GetBytes(newPrice.ToString());
+                    return webSocket.SendAsync(
+                        new ArraySegment<byte>(bytes),
+                        WebSocketMessageType.Text,
+                        endOfMessage: true,
+                        CancellationToken.None);
+                },
+                cancellationToken);
+
+        private static async Task CancelOnCloseMessageReceived(
+            WebSocket webSocket, 
+            CancellationTokenSource ctSource)
+        {
+            while (true)
+            {
+                var segment = new ArraySegment<byte>(new byte[2 * 1024]);
+                var msg = await webSocket.ReceiveAsync(segment, ctSource.Token);
+                if (msg.CloseStatus.HasValue)
+                {
+                    ctSource.Cancel();
+                }
+                // ignore other messages
+            }
         }
     }
 }

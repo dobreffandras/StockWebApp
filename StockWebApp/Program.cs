@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen(
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     });
 
+// Dependency Injection
 builder.Services.AddSingleton<StocksService>();
 
 var app = builder.Build();
@@ -32,5 +33,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseWebSockets();
 
 app.Run();

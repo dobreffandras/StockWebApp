@@ -106,6 +106,18 @@ namespace StockWebApp.Services
             return Array.Empty<StockPrice>();
         }
 
+        public async Task AttachLivePriceListener(
+            Func<double, Task> updatePrice, 
+            CancellationToken ct)
+        {
+            var i = 0;
+            while (!ct.IsCancellationRequested)
+            {
+                await Task.Delay(500, ct);
+                await updatePrice(i++);
+            }
+        }
+
         private IEnumerable<StockPrice> GenerateYearlyPrices(double startPrice)
         {
             var priceDeltaGenerator = new RandomPriceDeltaGenerator();
