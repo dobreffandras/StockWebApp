@@ -57,14 +57,14 @@ namespace StockWebApp.Controllers
             
         }
 
-        [HttpGet("/ws")]
-        public async Task Get()
+        [HttpGet("{symbol}/prices/live")]
+        public async Task Get(string symbol)
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                var livePriceService = new LivePriceService(stocksService);
-                await livePriceService.SendPriceDataFor(webSocket);
+                var livePriceService = new LivePriceService(webSocket, stocksService);
+                await livePriceService.SendPriceDataFor(symbol);
             }
             else
             {

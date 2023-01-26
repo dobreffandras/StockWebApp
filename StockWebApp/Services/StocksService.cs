@@ -10,6 +10,7 @@ namespace StockWebApp.Services
 
         public StocksService()
         {
+            // TODO get this from config
             stocks = new Dictionary<string, Stock>
             {
                 ["AAPL"] = new Stock(
@@ -107,15 +108,22 @@ namespace StockWebApp.Services
         }
 
         public async Task AttachLivePriceListener(
-            Func<double, Task> updatePrice, 
+            string symbol,
+            Func<StockPrice, Task> updatePrice, 
             CancellationToken ct)
         {
-            var i = 0;
-            while (!ct.IsCancellationRequested)
+            if (stocks.TryGetValue(symbol, out var stock))
             {
-                await Task.Delay(500, ct);
-                await updatePrice(i++);
+                var newPrice = stock.Price;
+                while (!ct.IsCancellationRequested)
+                {
+                    newPrice += 1.2;
+                    await Task.Delay(500, ct);
+                    await updatePrice(
+                        new StockPrice(DateTime.UtcNow, newPrice));
+                }
             }
+            // TODO return bad request for missing symbol
         }
 
         private IEnumerable<StockPrice> GenerateYearlyPrices(double startPrice)

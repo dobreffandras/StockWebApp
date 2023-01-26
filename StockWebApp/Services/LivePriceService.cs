@@ -1,22 +1,26 @@
-﻿using System.Net.WebSockets;
+﻿using StockWebApp.Dtos;
+using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 
 namespace StockWebApp.Services
 {
     public class LivePriceService
     {
+        private readonly WebSocket webSocket;
         private readonly StocksService stocksService;
 
-        public LivePriceService(StocksService stocksService)
+        public LivePriceService(WebSocket webSocket, StocksService stocksService)
         {
+            this.webSocket = webSocket;
             this.stocksService = stocksService;
         }
 
-        public async Task SendPriceDataFor(WebSocket webSocket)
+        public async Task SendPriceDataFor(string symbol)
         {
             var ctSource = new CancellationTokenSource();
-            var closeTask = CancelOnCloseMessageReceived(webSocket, ctSource);
-            var senderTask = SendPriceUpdates(webSocket, ctSource.Token);
+            var closeTask = CancelOnCloseMessageReceived(ctSource);
+            var senderTask = SendPriceUpdates(symbol, ctSource.Token);
 
             await Task.WhenAny(closeTask, senderTask);
             await webSocket.CloseAsync(
@@ -26,22 +30,25 @@ namespace StockWebApp.Services
         }
 
         private Task SendPriceUpdates(
-            WebSocket webSocket,
+            string symbol,
             CancellationToken cancellationToken)
             => stocksService.AttachLivePriceListener(
-                newPrice =>
-                {
-                    var bytes = Encoding.Default.GetBytes(newPrice.ToString());
-                    return webSocket.SendAsync(
-                        new ArraySegment<byte>(bytes),
-                        WebSocketMessageType.Text,
-                        endOfMessage: true,
-                        CancellationToken.None);
-                },
+                symbol,
+                SendPriceToWebSocket,
                 cancellationToken);
 
-        private static async Task CancelOnCloseMessageReceived(
-            WebSocket webSocket,
+        private Task SendPriceToWebSocket(StockPrice newPrice)
+        {
+            var message = JsonSerializer.Serialize(newPrice);
+            var bytes = Encoding.Default.GetBytes(message);
+            return webSocket.SendAsync(
+                new ArraySegment<byte>(bytes),
+                WebSocketMessageType.Text,
+                endOfMessage: true,
+                CancellationToken.None);
+        }
+
+        private async Task CancelOnCloseMessageReceived(
             CancellationTokenSource ctSource)
         {
             while (true)
