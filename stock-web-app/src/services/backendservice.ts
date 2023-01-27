@@ -1,5 +1,6 @@
 import { BasicStock, Stock, StockPrice } from "../types/types";
 const host = process.env.REACT_APP_BACKEND_HOST;
+const wsHost = process.env.REACT_APP_BACKEND_HOST_WS;
 
 
 function fetchJson<T>(url: string, searchParams: {[key:string] : string} = {}) : Promise<T> {
@@ -26,7 +27,17 @@ class Backendservice {
 
     fetchStockDailyPrices(symbol: string) {
         return fetchJson<StockPrice[]>(`${host}/stocks/${symbol}/prices`, {interval: "day"});
-    }    
+    }
+
+    subscribeToLivePrices(symbol: string, onPriceChanged: (price: number) => void) {
+        const ws = new WebSocket(`${wsHost}/stocks/${symbol}/prices/live`);
+
+        ws.onmessage = function (event) {
+            const json : StockPrice = JSON.parse(event.data);
+            let price = Math.round((json.value + Number.EPSILON) * 100) / 100;
+            onPriceChanged(price);
+        };
+    }
 }
 
 export default Backendservice;

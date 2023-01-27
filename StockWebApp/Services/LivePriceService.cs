@@ -39,7 +39,12 @@ namespace StockWebApp.Services
 
         private Task SendPriceToWebSocket(StockPrice newPrice)
         {
-            var message = JsonSerializer.Serialize(newPrice);
+            var message = JsonSerializer.Serialize(
+                newPrice,
+                new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
             var bytes = Encoding.Default.GetBytes(message);
             return webSocket.SendAsync(
                 new ArraySegment<byte>(bytes),

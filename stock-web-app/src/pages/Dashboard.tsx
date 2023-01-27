@@ -2,27 +2,7 @@ import './Dashboard.scss';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
 import { BasicStock, Loadable, LoadingInProgress, NotLoaded, Loaded, LoadingFailed, SwitchLoadable } from "../types/types";
-import ChangePointDetails from '../components/ChangePointDetails';
-
-function BasicStockListItem({data} : {data: BasicStock}){
-    const company = data.company;
-    return (
-        <a href={company.symbol}>
-            <div className="basic-stock-box">
-                <header>{company.name}</header>
-                <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
-                <div className='stock-details'>
-                    <div className='price-details'>
-                        {data.stockPrice} {data.currency}
-                    </div>
-                    <ChangePointDetails 
-                        changePoint={data.changePoint}
-                        changePercent={data.changePercent}
-                        />
-                </div>
-            </div>
-        </a>);
-}
+import BasicStockListItem from '../components/BasicStockListItem'
 
 function BasicStocks(){
     
@@ -34,7 +14,7 @@ function BasicStocks(){
         backendservice
             .fetchStocks()
             .then(comps => setStocks(Loaded<BasicStock[]>(comps)))
-            .catch(err =>{
+            .catch(err => {
                 setStocks(LoadingFailed(err));
             });
     }, []);
