@@ -12,7 +12,7 @@ function BasicStockListItem({data} : {data: BasicStock}) {
         const backendservice = new Backendservice();
         backendservice.subscribeToLivePrices(
             company.symbol,
-            price => setState(state => ({...state, stockPrice: price })));
+            price => setState(state => ({...state, stockPrice: price.value })));
     }, [company.symbol]);
     
     return (

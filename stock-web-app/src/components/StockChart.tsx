@@ -21,23 +21,36 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
     const backendservice = new Backendservice();
 
     useEffect(() => {
-        if (interval === StockPriceInterval.day) {
-            backendservice
-                .fetchStockDailyPrices(symbol)
-                .then(prices => {
-                    setState({
-                        chartConfig: { unit: "hour" },
-                        dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
-                    })
+        switch(interval){
+            case StockPriceInterval.day:
+                backendservice
+                    .fetchStockDailyPrices(symbol)
+                    .then(prices => {
+                        setState({
+                            chartConfig: { unit: "hour" },
+                            dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
+                        })
+                    });
+                break;
+            case StockPriceInterval.year:
+                backendservice
+                    .fetchStockYearlyPrices(symbol)
+                    .then(prices => {
+                        setState({
+                            chartConfig: { unit: "day" },
+                            dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
+                        })
+                    });
+                break;
+            case StockPriceInterval.live:
+                setState({
+                    chartConfig: { unit: "second" },
+                    dataPoints: []
                 });
-        } else {
-            backendservice
-                .fetchStockYearlyPrices(symbol)
-                .then(prices => {
-                    setState({
-                        chartConfig: { unit: "day" },
-                        dataPoints: prices.map(p => ({ x: p.date, y: p.value }))
-                    })
+
+                backendservice.subscribeToLivePrices(symbol, price => {
+                    let p = {x: price.date, y: price.value};
+                    setState(s => ({...s, dataPoints: [...s.dataPoints, p]}));
                 });
         }
 

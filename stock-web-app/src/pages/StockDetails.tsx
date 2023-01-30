@@ -97,6 +97,16 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                         <div className='interval-element'>
                             <input
                                 type="radio"
+                                id="live"
+                                name="stockPriceInterval"
+                                value={"live"}
+                                checked={selectedInterval === "live"}
+                                onChange={radioHandler} />
+                            <label htmlFor="live">Live</label>
+                        </div>
+                        <div className='interval-element'>
+                            <input
+                                type="radio"
                                 id="day"
                                 name="stockPriceInterval"
                                 value={"day"}
@@ -118,10 +128,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                     <div className="chart">
                         <StockChart
                             symbol={stock.company.symbol}
-                            interval={
-                                selectedInterval === "day"
-                                    ? StockPriceInterval.day
-                                    : StockPriceInterval.year} />
+                            interval={switchInterval(selectedInterval)} />
                     </div>
                 </div>
             </div>
@@ -131,6 +138,19 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
 function toBillion(n: number) {
     var converted = n / 1_000_000_000;
     return `${converted} B`;
+}
+
+function switchInterval(interval : string) : StockPriceInterval {
+    switch(interval){
+        case "year":
+            return StockPriceInterval.year;
+        case "day":
+            return StockPriceInterval.day;
+        case "live":
+            return StockPriceInterval.live;
+        default:
+            return StockPriceInterval.year;
+    }
 }
 
 export default StockDetails;
