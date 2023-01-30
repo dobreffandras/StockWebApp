@@ -1,11 +1,11 @@
-import './BasicStockListItem.scss';
+import './StockCard.scss';
 import { useEffect, useState } from "react";
-import { BasicStock } from "../types/types";
+import { StockBasicInfo } from "../types/types";
 import Backendservice from "../services/backendservice";
 import ChangePointDetails from './ChangePointDetails';
 
-function BasicStockListItem({data} : {data: BasicStock}) {
-    const [state, setState] = useState<BasicStock>(data);
+function StockCard({data} : {data: StockBasicInfo}) {
+    const [state, setState] = useState<StockBasicInfo>(data);
     const company = data.company;
 
     useEffect(() => {
@@ -34,4 +34,4 @@ function BasicStockListItem({data} : {data: BasicStock}) {
         </a>);
 }
 
-export default BasicStockListItem
+export default StockCard

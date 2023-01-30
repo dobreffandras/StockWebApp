@@ -9,7 +9,7 @@ export interface Company {
     exchange: string;
 }
 
-export interface BasicStock {
+export interface StockBasicInfo {
     company: Company,
     stockPrice: number,
     currency: string,

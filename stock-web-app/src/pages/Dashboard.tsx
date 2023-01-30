@@ -1,19 +1,19 @@
 import './Dashboard.scss';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
-import { BasicStock, Loadable, LoadingInProgress, NotLoaded, Loaded, LoadingFailed, SwitchLoadable } from "../types/types";
-import BasicStockListItem from '../components/BasicStockListItem'
+import { StockBasicInfo, Loadable, LoadingInProgress, NotLoaded, Loaded, LoadingFailed, SwitchLoadable } from "../types/types";
+import StockCard from '../components/StockCard'
 
-function BasicStocks(){
+function StockCards(){
     
-    const [stocks, setStocks] = useState<Loadable<BasicStock[]>>(NotLoaded);
+    const [stocks, setStocks] = useState<Loadable<StockBasicInfo[]>>(NotLoaded);
 
     useEffect(()=> {
         setStocks(LoadingInProgress)
         const backendservice = new Backendservice();
         backendservice
             .fetchStocks()
-            .then(comps => setStocks(Loaded<BasicStock[]>(comps)))
+            .then(comps => setStocks(Loaded<StockBasicInfo[]>(comps)))
             .catch(err => {
                 setStocks(LoadingFailed(err));
             });
@@ -27,7 +27,7 @@ function BasicStocks(){
             <>
                 <h2>Companies</h2>
                 <div className='stock-boxes-container'>
-                    {l.data.map(i => (<BasicStockListItem data={i} key={i.company.symbol} />))}
+                    {l.data.map(i => (<StockCard data={i} key={i.company.symbol} />))}
                 </div>
             </>),
         _ => (<>Loading failed. Please refresh the page.</>))
@@ -37,7 +37,7 @@ function Dashboard(){
     return (
     <div className="dashboard">
         <h1>Dashboard</h1>
-        <BasicStocks />
+        <StockCards />
     </div>)
 }
 
