@@ -1,0 +1,72 @@
+{
+  "stocks": [
+    {
+      "company": {
+        "name": "Apple Inc.",
+        "exchange": "NASDAQ",
+        "symbol": "AAPL"
+      },
+      "price": 150.6,
+      "currency": "USD",
+      "changePoint": -1.26,
+      "changePercent": 0.81,
+      "previousClose": 152.95,
+      "open": 154.01,
+      "marketCap": 2480000000,
+      "dailyRange": {
+        "low": 152.28,
+        "high": 155.04
+      },
+      "yearlyRange": {
+        "low": 129.04,
+        "high": 182.94
+      },
+      "dividend": 0.92,
+      "dividendYield": 0.6
+    },
+    {
+      "company": {
+        "name": "Alphabet Inc Class C",
+        "exchange": "NASDAQ",
+        "symbol": "GOOG"
+      },
+      "price": 108.36,
+      "currency": "USD",
+      "changePoint": -6.68,
+      "changePercent": 5.81,
+      "previousClose": 108.36,
+      "open": 108.8,
+      "marketCap": 1420000000,
+      "dailyRange": {
+        "low": 107.01,
+        "high": 110.57
+      },
+      "yearlyRange": {
+        "low": 102.21,
+        "high": 152.10
+      }
+    },
+    {
+      "company": {
+        "name": "Netflix",
+        "exchange": "NASDAQ",
+        "symbol": "NFLX"
+      },
+      "price": 220.44,
+      "currency": "USD",
+      "changePoint": 3.44,
+      "changePercent": 1.54,
+      "previousClose": 218.51,
+      "open": 221.31,
+      "marketCap": 97173000000,
+      "dailyRange": {
+        "low": 216.35,
+        "high": 225.23
+      },
+      "yearlyRange": {
+        "low": 162.71,
+        "high": 700.99
+      }
+    }
+  ]
+}

@@ -8,51 +8,9 @@ namespace StockWebApp.Services
         private readonly IDictionary<string, IEnumerable<StockPrice>> yearlyPrices;
         private readonly IDictionary<string, IEnumerable<StockPrice>> dailyPrices;
 
-        public StocksService()
+        public StocksService(Data data)
         {
-            // TODO get this from config
-            stocks = new Dictionary<string, Stock>
-            {
-                ["AAPL"] = new Stock(
-                            Company: new Company("AAPL", "NASDAQ", "Apple Inc."),
-                            Price: 150.6,
-                            Currency: "USD",
-                            ChangePoint: -1.26,
-                            ChangePercent: 0.81,
-                            PreviousClose: 152.95,
-                            Open: 154.01,
-                            MarketCap: 2480000000,
-                            DailyRange: new PriceRange(152.28, 155.04),
-                            YearlyRange: new PriceRange(129.04, 182.94),
-                            Dividend: 0.92,
-                            DividendYield: 0.6),
-                ["GOOG"] = new Stock(
-                            Company: new Company("GOOG", "NASDAQ", "Alphabet Inc Class C"),
-                            Price: 108.36,
-                            Currency: "USD",
-                            ChangePoint: -6.68,
-                            ChangePercent: 5.81,
-                            PreviousClose: 108.36,
-                            Open: 108.88,
-                            MarketCap: 1420000000,
-                            DailyRange: new PriceRange(107.01, 110.57),
-                            YearlyRange: new PriceRange(102.21, 152.10),
-                            Dividend: null,
-                            DividendYield: null),
-                ["NFLX"] = new Stock(
-                            Company: new Company("NFLX", "NASDAQ", "Netflix"),
-                            Price: 220.44,
-                            Currency: "USD",
-                            ChangePoint: 3.44,
-                            ChangePercent: 1.54,
-                            PreviousClose: 218.51,
-                            Open: 221.31,
-                            MarketCap: 97_173_000_000,
-                            DailyRange: new PriceRange(216.35, 225.23),
-                            YearlyRange: new PriceRange(162.71, 700.99),
-                            Dividend: null,
-                            DividendYield: null),
-            };
+            stocks = data.Stocks.ToDictionary(x => x.Company.Symbol, x => x);
 
             yearlyPrices = 
                 stocks.ToDictionary(

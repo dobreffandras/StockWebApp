@@ -1,5 +1,9 @@
+using StockWebApp;
+using StockWebApp.Dtos;
 using StockWebApp.Services;
+using System;
 using System.Reflection;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,7 @@ builder.Services.AddSwaggerGen(
     });
 
 // Dependency Injection
+builder.Services.AddSingleton(_ => ReadDataFromConfigurationFile());
 builder.Services.AddSingleton<StocksService>();
 
 var app = builder.Build();
@@ -37,3 +42,16 @@ app.MapControllers();
 app.UseWebSockets();
 
 app.Run();
+
+Data ReadDataFromConfigurationFile()
+{
+    using StreamReader r = new("data.json");
+    string json = r.ReadToEnd();
+    var parsed = JsonSerializer.Deserialize<Data>(
+        json, 
+        new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+    return parsed;
+}
