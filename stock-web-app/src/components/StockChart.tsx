@@ -18,9 +18,10 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
         chartConfig: { unit: "day" },
         dataPoints: []
     });
-    const backendservice = new Backendservice();
+    
 
     useEffect(() => {
+        const backendservice = new Backendservice();
         switch(interval){
             case StockPriceInterval.day:
                 backendservice
@@ -54,7 +55,7 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
                 });
         }
 
-    }, [interval]);
+    }, [symbol, interval]);
 
     const data: ChartData<"line", { x: Date, y: number }[]> = {
         datasets: [{
