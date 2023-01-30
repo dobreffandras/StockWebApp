@@ -7,7 +7,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=mypass123
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<YOUR PASSWORD>
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/StockWebApp.pfx
     volumes:
       - .\httpcert:/https/
