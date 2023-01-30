@@ -4,7 +4,7 @@ import { ChartData, TimeUnit } from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from 'react';
 import Backendservice from '../services/backendservice';
-import { StockPriceInterval } from '../types/types';
+import { StockPrice, StockPriceInterval } from '../types/types';
 
 type StockChartState = {
     chartConfig: {
@@ -13,7 +13,7 @@ type StockChartState = {
     dataPoints: { x: Date, y: number }[],
 }
 
-function StockChart({ symbol, interval }: { symbol: string, interval: StockPriceInterval }) {
+function StockChart({ symbol, interval, livePrice }: { symbol: string, interval: StockPriceInterval, livePrice: StockPrice }) {
     const [state, setState] = useState<StockChartState>({
         chartConfig: { unit: "day" },
         dataPoints: []
@@ -48,16 +48,16 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
                     chartConfig: { unit: "second" },
                     dataPoints: []
                 });
-
-                let unsubscribe = backendservice.subscribeToLivePrices(symbol, price => {
-                    let p = {x: price.date, y: price.value};
-                    setState(s => ({...s, dataPoints: [...s.dataPoints, p]}));
-                });
-
-                return unsubscribe;
         }
 
     }, [symbol, interval]);
+
+    useEffect(() => {
+        if(interval === StockPriceInterval.live){
+            let p = {x: livePrice.date, y: livePrice.value};
+            setState(s => ({...s, dataPoints: [...s.dataPoints, p]}));
+        }
+    }, [interval, livePrice]);
 
     const data: ChartData<"line", { x: Date, y: number }[]> = {
         datasets: [{

@@ -2,7 +2,7 @@ import './StockDetails.scss';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
-import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, StockPriceInterval, SwitchLoadable } from "../types/types";
+import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, StockPrice, StockPriceInterval, SwitchLoadable } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 
@@ -36,7 +36,7 @@ function StockDetails() {
 function StockDetailsLoaded({ stock }: { stock: Stock }) {
     const [selectedInterval, setSelectedInterval] = useState("year");
     const [stockState, setStockState] = useState(stock);
-    
+    const [livePrice, setLivePrice] = useState<StockPrice>({date: new Date(), value: stock.price});
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedInterval(event.target.value);
@@ -45,6 +45,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
     useEffect(()=> {
         const backendservice = new Backendservice();
         let unsubscribe = backendservice.subscribeToLivePrices(stock.company.symbol, price => {
+            setLivePrice(price);
             setStockState(s => ({...s, price: price.value}));
         });
 
@@ -139,7 +140,8 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                     <div className="chart">
                         <StockChart
                             symbol={company.symbol}
-                            interval={switchInterval(selectedInterval)} />
+                            interval={switchInterval(selectedInterval)}
+                            livePrice={livePrice} />
                     </div>
                 </div>
             </div>
