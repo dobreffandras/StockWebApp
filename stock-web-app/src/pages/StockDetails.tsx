@@ -35,27 +35,36 @@ function StockDetails() {
 
 function StockDetailsLoaded({ stock }: { stock: Stock }) {
     const [selectedInterval, setSelectedInterval] = useState("year");
+    const [stockState, setStockState] = useState(stock);
+    
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedInterval(event.target.value);
     };
+    
+    useEffect(()=> {
+        const backendservice = new Backendservice();
+        backendservice.subscribeToLivePrices(stock.company.symbol, price => {
+            setStockState(s => ({...s, price: price.value}));
+        });
+    }, [stock.company.symbol]);
 
-    const company = stock.company;
+    const company = stockState.company;
     return (
         <div className="stockPage">
             <header>
                 <a className='back-to-dashboard' href='/'>← Dashboard</a>
-                <h1 className='company-name'>{stock.company.name}</h1>
+                <h1 className='company-name'>{company.name}</h1>
                 <div className='sub-header'>({company.symbol}) @{company.exchange}</div>
             </header>
             <div className="content">
                 <div className="left-sidebar">
                     <div className="sidebar-header">
-                        <div className='price'>{stock.price} {stock.currency}</div>
+                        <div className='price'>{stockState.price} {stockState.currency}</div>
                         <div className='changepont-container'>
                             <ChangePointDetails
-                                changePoint={stock.changePoint}
-                                changePercent={stock.changePercent} />
+                                changePoint={stockState.changePoint}
+                                changePercent={stockState.changePercent} />
                         </div>
                     </div>
                     <div className="additional-data">
@@ -63,30 +72,30 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                             <tbody>
                                 <tr>
                                     <td className='property-name'>Previous close:</td>
-                                    <td>{stock.previousClose}</td>
+                                    <td>{stockState.previousClose}</td>
                                 </tr>
                                 <tr>
                                     <td className='property-name'>Open:</td>
-                                    <td>{stock.open}</td>
+                                    <td>{stockState.open}</td>
                                 </tr>
                                 <tr>
                                     <td className='property-name'>Daily range:</td>
-                                    <td>{stock.dailyRange.low}-{stock.dailyRange.high}</td>
+                                    <td>{stockState.dailyRange.low}-{stockState.dailyRange.high}</td>
                                 </tr>
                                 <tr>
                                     <td className='property-name'>Yearly range:</td>
-                                    <td>{stock.yearlyRange.low}-{stock.yearlyRange.high}</td>
+                                    <td>{stockState.yearlyRange.low}-{stockState.yearlyRange.high}</td>
                                 </tr>
                                 {
-                                    stock.dividend &&
+                                    stockState.dividend &&
                                     (<tr>
                                         <td className='property-name'>Dividend (Yield):</td>
-                                        <td>{stock.dividend} ({stock.dividendYield}%)</td>
+                                        <td>{stockState.dividend} ({stockState.dividendYield}%)</td>
                                     </tr>)
                                 }
                                 <tr>
                                     <td className='property-name'>Market cap:</td>
-                                    <td>{toBillion(stock.marketCap)}</td>
+                                    <td>{toBillion(stockState.marketCap)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,7 +136,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                     </div>
                     <div className="chart">
                         <StockChart
-                            symbol={stock.company.symbol}
+                            symbol={company.symbol}
                             interval={switchInterval(selectedInterval)} />
                     </div>
                 </div>
