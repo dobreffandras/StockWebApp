@@ -3,10 +3,14 @@ services:
     build: 
       context: ./StockWebApp
     ports:
-      - "3001:80"
+      - "3001:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=mypass123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/StockWebApp.pfx
+    volumes:
+      - .\httpcert:/https/
   frontend:
     build:
       context: ./stock-web-app
