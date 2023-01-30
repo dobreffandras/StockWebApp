@@ -125,8 +125,11 @@ namespace StockWebApp.Services
                     await updatePrice(
                         new StockPrice(DateTime.UtcNow, nextPriceGenerator.Price));
                 }
+            } 
+            else
+            {
+                throw new ArgumentException("This symbol does not exist.", nameof(symbol));
             }
-            // TODO return bad request for missing symbol
         }
 
         private IEnumerable<StockPrice> GenerateYearlyPrices(double startPrice)

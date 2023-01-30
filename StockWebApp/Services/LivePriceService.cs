@@ -23,10 +23,23 @@ namespace StockWebApp.Services
             var senderTask = SendPriceUpdates(symbol, ctSource.Token);
 
             await Task.WhenAny(closeTask, senderTask);
-            await webSocket.CloseAsync(
-                closeStatus: WebSocketCloseStatus.NormalClosure,
-                statusDescription: "Socket state changed",
-                CancellationToken.None);
+
+            if (senderTask.IsFaulted)
+            {
+                var ex = senderTask.Exception!;
+                await webSocket.CloseAsync(
+                    closeStatus: WebSocketCloseStatus.NormalClosure,
+                    statusDescription: ex.Message,
+                    CancellationToken.None);
+                throw ex.InnerException!;
+            }
+            else
+            {
+                await webSocket.CloseAsync(
+                    closeStatus: WebSocketCloseStatus.NormalClosure,
+                    statusDescription: "Socket state changed",
+                    CancellationToken.None);
+            }
         }
 
         private Task SendPriceUpdates(

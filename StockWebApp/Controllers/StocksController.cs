@@ -56,17 +56,29 @@ namespace StockWebApp.Controllers
         }
 
         [HttpGet("{symbol}/prices/live")]
-        public async Task Get(string symbol)
+        public async Task<IActionResult> Get(string symbol)
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                var livePriceService = new LivePriceService(webSocket, stocksService);
-                await livePriceService.SendPriceDataFor(symbol);
+                try
+                {
+                    using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                    var livePriceService = new LivePriceService(webSocket, stocksService);
+                    await livePriceService.SendPriceDataFor(symbol);
+                    return Ok();
+                } 
+                catch (ArgumentException ex) 
+                { 
+                    return BadRequest(ex.Message);
+                } 
+                catch
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
             }
             else
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return BadRequest("Not a webocket request");
             }
         }
     }
