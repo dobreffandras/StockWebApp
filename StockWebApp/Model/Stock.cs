@@ -1,4 +1,4 @@
-﻿namespace StockWebApp.Dtos
+﻿namespace StockWebApp.Model
 {
     public record Stock(
         Company Company,

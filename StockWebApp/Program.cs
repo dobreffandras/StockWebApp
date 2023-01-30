@@ -1,5 +1,5 @@
 using StockWebApp;
-using StockWebApp.Dtos;
+using StockWebApp.Model;
 using StockWebApp.Services;
 using System;
 using System.Reflection;

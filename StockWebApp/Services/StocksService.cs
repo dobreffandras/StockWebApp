@@ -1,4 +1,4 @@
-﻿using StockWebApp.Dtos;
+﻿using StockWebApp.Model;
 
 namespace StockWebApp.Services
 {

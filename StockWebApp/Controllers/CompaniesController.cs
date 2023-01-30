@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using StockWebApp.Dtos;
+using StockWebApp.Model;
 
 namespace StockWebApp.Controllers
 {

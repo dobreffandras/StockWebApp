@@ -1,4 +1,4 @@
-﻿using StockWebApp.Dtos;
+﻿using StockWebApp.Model;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
