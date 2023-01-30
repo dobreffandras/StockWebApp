@@ -10,9 +10,10 @@ function BasicStockListItem({data} : {data: BasicStock}) {
 
     useEffect(() => {
         const backendservice = new Backendservice();
-        backendservice.subscribeToLivePrices(
+        let unsubscribe = backendservice.subscribeToLivePrices(
             company.symbol,
             price => setState(state => ({...state, stockPrice: price.value })));
+        return unsubscribe;
     }, [company.symbol]);
     
     return (

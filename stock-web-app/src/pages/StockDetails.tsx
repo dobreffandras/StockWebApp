@@ -44,9 +44,11 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
     
     useEffect(()=> {
         const backendservice = new Backendservice();
-        backendservice.subscribeToLivePrices(stock.company.symbol, price => {
+        let unsubscribe = backendservice.subscribeToLivePrices(stock.company.symbol, price => {
             setStockState(s => ({...s, price: price.value}));
         });
+
+        return unsubscribe;
     }, [stock.company.symbol]);
 
     const company = stockState.company;

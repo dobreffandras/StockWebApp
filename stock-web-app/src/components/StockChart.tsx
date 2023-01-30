@@ -49,10 +49,12 @@ function StockChart({ symbol, interval }: { symbol: string, interval: StockPrice
                     dataPoints: []
                 });
 
-                backendservice.subscribeToLivePrices(symbol, price => {
+                let unsubscribe = backendservice.subscribeToLivePrices(symbol, price => {
                     let p = {x: price.date, y: price.value};
                     setState(s => ({...s, dataPoints: [...s.dataPoints, p]}));
                 });
+
+                return unsubscribe;
         }
 
     }, [symbol, interval]);

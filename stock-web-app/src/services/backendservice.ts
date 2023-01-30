@@ -29,7 +29,7 @@ class Backendservice {
         return fetchJson<StockPrice[]>(`${host}/stocks/${symbol}/prices`, {interval: "day"});
     }
 
-    subscribeToLivePrices(symbol: string, onPriceChanged: (price: StockPrice) => void) {
+    subscribeToLivePrices(symbol: string, onPriceChanged: (price: StockPrice) => void) : () => void {
         const ws = new WebSocket(`${wsHost}/stocks/${symbol}/prices/live`);
 
         ws.onmessage = function (event) {
@@ -38,6 +38,8 @@ class Backendservice {
             let price = Math.round((json.value + Number.EPSILON) * 100) / 100;
             onPriceChanged({date: date, value: price});
         };
+
+        return () => { ws.close() };
     }
 }
 
