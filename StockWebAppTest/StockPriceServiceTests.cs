@@ -1,5 +1,5 @@
 using FluentAssertions;
-using StockWebApp.Dtos;
+using StockWebApp.Model;
 using StockWebApp.Services;
 
 namespace StockWebAppTest
@@ -12,7 +12,7 @@ namespace StockWebAppTest
 
         public StockPriceServiceTests()
         {
-            sut = new StocksService();
+            sut = new StocksService(new Data(Enumerable.Empty<Stock>()));
             var startDate = DateTime.Now;
             dates = new[]
             {
@@ -92,7 +92,7 @@ namespace StockWebAppTest
             // Given
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
-            var feedEnumberator = feeds.GetEnumerator();
+            using var feedEnumerator = feeds.GetEnumerator();
 
             // When
             var prices = sut.GeneratePrices(
@@ -100,8 +100,9 @@ namespace StockWebAppTest
                 dates,
                 randomFeed: () =>
                 {
-                    feedEnumberator.MoveNext();
-                    return feedEnumberator.Current;
+                    // ReSharper disable AccessToDisposedClosure
+                    feedEnumerator.MoveNext();
+                    return feedEnumerator.Current;
                 },
                 forces: new[] { 0.0 });
 
@@ -127,7 +128,7 @@ namespace StockWebAppTest
             // Given
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
-            var feedEnumberator = feeds.GetEnumerator();
+            using var feedEnumerator = feeds.GetEnumerator();
 
             // When
             var prices = sut.GeneratePrices(
@@ -135,8 +136,9 @@ namespace StockWebAppTest
                 dates,
                 () =>
                 {
-                    feedEnumberator.MoveNext();
-                    return feedEnumberator.Current;
+                    // ReSharper disable AccessToDisposedClosure
+                    feedEnumerator.MoveNext();
+                    return feedEnumerator.Current;
                 },
                 forces: new[] {0.05});
 
@@ -162,7 +164,7 @@ namespace StockWebAppTest
             // Given
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
-            var feedEnumberator = feeds.GetEnumerator();
+            using var feedEnumerator = feeds.GetEnumerator();
 
             // When
             var prices = sut.GeneratePrices(
@@ -170,8 +172,9 @@ namespace StockWebAppTest
                 dates,
                 () =>
                 {
-                    feedEnumberator.MoveNext();
-                    return feedEnumberator.Current;
+                    // ReSharper disable AccessToDisposedClosure
+                    feedEnumerator.MoveNext();
+                    return feedEnumerator.Current;
                 },
                 forces: new[] { 0.05, -0.07 });
 
@@ -197,7 +200,7 @@ namespace StockWebAppTest
             // Given
             var startPrice = 152.34;
             var feeds = new List<double> { 0.03, 0.01, -0.05, 0.01 };
-            var feedEnumberator = feeds.GetEnumerator();
+            using var feedEnumerator = feeds.GetEnumerator();
 
             // When
             var prices = sut.GeneratePrices(
@@ -205,8 +208,9 @@ namespace StockWebAppTest
                 hours,
                 () =>
                 {
-                    feedEnumberator.MoveNext();
-                    return feedEnumberator.Current;
+                    // ReSharper disable AccessToDisposedClosure
+                    feedEnumerator.MoveNext();
+                    return feedEnumerator.Current;
                 },
                 forces: new[] { 0.05, -0.07 });
 
