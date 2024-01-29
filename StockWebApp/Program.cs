@@ -42,16 +42,17 @@ app.MapControllers();
 app.UseWebSockets();
 
 app.Run();
+return;
 
 Data ReadDataFromConfigurationFile()
 {
     using StreamReader r = new("data.json");
-    string json = r.ReadToEnd();
+    var json = r.ReadToEnd();
     var parsed = JsonSerializer.Deserialize<Data>(
         json, 
         new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
-    return parsed;
+    return parsed ?? new Data(Enumerable.Empty<Stock>());
 }
