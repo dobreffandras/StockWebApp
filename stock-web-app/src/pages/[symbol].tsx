@@ -5,6 +5,7 @@ import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 import { useRouter } from "next/router";
 import styles from '../styles/StockDetails.module.scss';
+import Link from "next/link";
 
 function StockDetails() {
     
@@ -59,7 +60,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
     return (
         <div className={styles["stockPage"]}>
             <header>
-                <a className={styles['back-to-dashboard']} href='/'>← Dashboard</a>
+                <Link className={styles['back-to-dashboard']} href='/'>← Dashboard</Link>
                 <h1 className={styles['company-name']}>{company.name}</h1>
                 <div className={styles['sub-header']}>({company.symbol}) @{company.exchange}</div>
             </header>
