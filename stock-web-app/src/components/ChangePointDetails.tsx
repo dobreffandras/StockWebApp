@@ -1,15 +1,17 @@
+import styles from "../styles/ChangePointDetails.module.scss"
+
 function ChangePointDetails({ changePoint, changePercent }: { changePoint: number; changePercent: number; }) {
     const indicated_style = signSwitch(changePoint, "positive", "negative", "natural");
     const indicator = signSwitch(changePoint, "\u25B2", "\u25BC", "-");
 
     return (
-        <div className={`changepoint-details ${indicated_style}`}>
-            <div className='indicator'>
+        <div className={`${styles["changepoint-details"]} ${styles[indicated_style]}`}>
+            <div className={styles['indicator']}>
                 {indicator}
             </div>
-            <div className='changepoints'>
-                <div className='changepoint'>{changePoint}</div>
-                <div className='changepercent'>({changePercent}%)</div>
+            <div className={styles['changepoints']}>
+                <div className={styles['changepoint']}>{changePoint}</div>
+                <div className={styles['changepercent']}>({changePercent}%)</div>
             </div>
         </div>);
 }

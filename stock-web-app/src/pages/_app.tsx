@@ -1,13 +1,7 @@
 import {AppProps} from 'next/app';
-import "../App.scss";
-import "../components/ChangePointDetails.scss";
-import "../components/Menu.scss"
-import "../components/StockCard.scss";
-import "./Dashboard.scss";
-import "./StockDetails.scss"
-import "./_document.scss"
 import Menu from '../components/Menu';
 import { MenuItem } from '../types/types';
+import "../styles/global.scss";
 
 const menuItems : MenuItem[] = [{
   label: "MenuItem1",
@@ -22,8 +16,8 @@ const menuItems : MenuItem[] = [{
 
 function App({Component, pageProps}: AppProps) {
   return (
-    <div className="App">
-    <header className="App-header">
+    <div className="app">
+    <header>
       <Menu items={menuItems}/>
     </header>
     <Component {...pageProps} />

@@ -4,6 +4,7 @@ import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, S
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
 import { useRouter } from "next/router";
+import styles from '../styles/StockDetails.module.scss';
 
 function StockDetails() {
     
@@ -56,59 +57,59 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
 
     const company = stockState.company;
     return (
-        <div className="stockPage">
+        <div className={styles["stockPage"]}>
             <header>
-                <a className='back-to-dashboard' href='/'>← Dashboard</a>
-                <h1 className='company-name'>{company.name}</h1>
-                <div className='sub-header'>({company.symbol}) @{company.exchange}</div>
+                <a className={styles['back-to-dashboard']} href='/'>← Dashboard</a>
+                <h1 className={styles['company-name']}>{company.name}</h1>
+                <div className={styles['sub-header']}>({company.symbol}) @{company.exchange}</div>
             </header>
-            <div className="content">
-                <div className="left-sidebar">
-                    <div className="sidebar-header">
-                        <div className='price'>{stockState.price} {stockState.currency}</div>
-                        <div className='changepont-container'>
+            <div className={styles["content"]}>
+                <div className={styles["left-sidebar"]}>
+                    <div className={styles["sidebar-header"]}>
+                        <div className={styles['price']}>{stockState.price} {stockState.currency}</div>
+                        <div className={styles['changepont-container']}>
                             <ChangePointDetails
                                 changePoint={stockState.changePoint}
                                 changePercent={stockState.changePercent} />
                         </div>
                     </div>
-                    <div className="additional-data">
+                    <div className={styles["additional-data"]}>
                         <table>
                             <tbody>
                                 <tr>
-                                    <td className='property-name'>Previous close:</td>
+                                    <td className={styles['property-name']}>Previous close:</td>
                                     <td>{stockState.previousClose}</td>
                                 </tr>
                                 <tr>
-                                    <td className='property-name'>Open:</td>
+                                    <td className={styles['property-name']}>Open:</td>
                                     <td>{stockState.open}</td>
                                 </tr>
                                 <tr>
-                                    <td className='property-name'>Daily range:</td>
+                                    <td className={styles['property-name']}>Daily range:</td>
                                     <td>{stockState.dailyRange.low}-{stockState.dailyRange.high}</td>
                                 </tr>
                                 <tr>
-                                    <td className='property-name'>Yearly range:</td>
+                                    <td className={styles['property-name']}>Yearly range:</td>
                                     <td>{stockState.yearlyRange.low}-{stockState.yearlyRange.high}</td>
                                 </tr>
                                 {
                                     stockState.dividend &&
                                     (<tr>
-                                        <td className='property-name'>Dividend (Yield):</td>
+                                        <td className={styles['property-name']}>Dividend (Yield):</td>
                                         <td>{stockState.dividend} ({stockState.dividendYield}%)</td>
                                     </tr>)
                                 }
                                 <tr>
-                                    <td className='property-name'>Market cap:</td>
+                                    <td className={styles['property-name']}>Market cap:</td>
                                     <td>{toBillion(stockState.marketCap)}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div className="chart-container">
-                    <div className='interval-selector'>
-                        <div className='interval-element'>
+                <div className={styles["chart-container"]}>
+                    <div className={styles['interval-selector']}>
+                        <div className={styles['interval-element']}>
                             <input
                                 type="radio"
                                 id="live"
@@ -118,7 +119,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                                 onChange={radioHandler} />
                             <label htmlFor="live">Live</label>
                         </div>
-                        <div className='interval-element'>
+                        <div className={styles['interval-element']}>
                             <input
                                 type="radio"
                                 id="day"
@@ -128,7 +129,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                                 onChange={radioHandler} />
                             <label htmlFor="day">1 Day</label>
                         </div>
-                        <div className='interval-element'>
+                        <div className={styles['interval-element']}>
                             <input
                                 type="radio"
                                 id="year"
@@ -139,7 +140,7 @@ function StockDetailsLoaded({ stock }: { stock: Stock }) {
                             <label htmlFor="year">1 Year</label>
                         </div>
                     </div>
-                    <div className="chart">
+                    <div className={styles["chart"]}>
                         <StockChart
                             symbol={company.symbol}
                             interval={switchInterval(selectedInterval)}
