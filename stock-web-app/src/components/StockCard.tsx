@@ -1,4 +1,3 @@
-import './StockCard.scss';
 import { useEffect, useState } from "react";
 import { StockBasicInfo } from "../types/types";
 import Backendservice from "../services/backendservice";

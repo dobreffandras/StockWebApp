@@ -1,5 +1,3 @@
-import './ChangePointDetails.scss';
-
 function ChangePointDetails({ changePoint, changePercent }: { changePoint: number; changePercent: number; }) {
     const indicated_style = signSwitch(changePoint, "positive", "negative", "natural");
     const indicator = signSwitch(changePoint, "\u25B2", "\u25BC", "-");

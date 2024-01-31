@@ -1,18 +1,20 @@
-import './StockDetails.scss';
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Backendservice from "../services/backendservice";
 import { Loadable, Loaded, LoadingFailed, LoadingInProgress, NotLoaded, Stock, StockPrice, StockPriceInterval, SwitchLoadable } from "../types/types";
 import ChangePointDetails from '../components/ChangePointDetails';
 import StockChart from '../components/StockChart';
+import { useRouter } from "next/router";
 
 function StockDetails() {
-    const { symbol } = useParams();
+    
     const backendservice = new Backendservice();
-
+    const router = useRouter();
     const [stock, setStock] = useState<Loadable<Stock>>(NotLoaded);
 
     useEffect(() => {
+        if(!router.isReady) return;
+
+        const symbol = router.query.symbol as string;
         setStock(LoadingInProgress);
 
         backendservice
@@ -23,7 +25,7 @@ function StockDetails() {
                 setStock(LoadingFailed(err));
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [router]);
 
     return SwitchLoadable(
         stock,

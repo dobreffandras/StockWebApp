@@ -1,8 +1,15 @@
-import './Dashboard.scss';
 import { useEffect, useState } from "react";
 import Backendservice from "../services/backendservice";
 import { StockBasicInfo, Loadable, LoadingInProgress, NotLoaded, Loaded, LoadingFailed, SwitchLoadable } from "../types/types";
 import StockCard from '../components/StockCard'
+
+export default function Dashboard(){
+    return (
+    <div className="dashboard">
+        <h1>Dashboard</h1>
+        <StockCards />
+    </div>)
+}
 
 function StockCards(){
     
@@ -33,12 +40,3 @@ function StockCards(){
         _ => (<>Loading failed. Please refresh the page.</>))
 }
 
-function Dashboard(){
-    return (
-    <div className="dashboard">
-        <h1>Dashboard</h1>
-        <StockCards />
-    </div>)
-}
-
-export default Dashboard;
