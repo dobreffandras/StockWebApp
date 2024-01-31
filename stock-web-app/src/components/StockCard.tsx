@@ -1,8 +1,8 @@
-import './StockCard.scss';
 import { useEffect, useState } from "react";
 import { StockBasicInfo } from "../types/types";
 import Backendservice from "../services/backendservice";
 import ChangePointDetails from './ChangePointDetails';
+import styles from "../styles/StockCard.module.scss"
 
 function StockCard({data} : {data: StockBasicInfo}) {
     const [state, setState] = useState<StockBasicInfo>(data);
@@ -18,11 +18,11 @@ function StockCard({data} : {data: StockBasicInfo}) {
     
     return (
         <a href={company.symbol}>
-            <div className="basic-stock-box">
+            <div className={styles["basic-stock-box"]}>
                 <header>{company.name}</header>
-                <div className='sub-header'>({company.symbol}) @{company.exchange}</div> 
-                <div className='stock-details'>
-                    <div className='price-details'>
+                <div className={styles["sub-header"]}>({company.symbol}) @{company.exchange}</div> 
+                <div className={styles["stock-details"]}>
+                    <div className={styles["price-details"]}>
                         {state.stockPrice} {state.currency}
                     </div>
                     <ChangePointDetails 
